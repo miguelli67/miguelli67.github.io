@@ -4,14 +4,77 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Science</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #a8edea, #fed6e3); /* calming blue-pink science tones */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      color: #222;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 10px 0;
+    }
+
+    a {
+      text-decoration: none;
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    a:hover {
+      background-color: #388e3c;
+    }
+
+    .back-link {
+      margin-top: 40px;
+      display: inline-block;
+      font-size: 1rem;
+      background-color: #f1f1f1;
+      color: #333;
+      padding: 10px 20px;
+      border-radius: 6px;
+    }
+
+    .back-link:hover {
+      background-color: #ddd;
+    }
+  </style>
 </head>
 <body>
   <h1>Science</h1>
   <p>Select a topic:</p>
   <ul>
     <li><a href="Biology/index.html">Biology</a></li>
-    <!-- You can add more science topics later -->
+    <!-- Add more topics here later -->
   </ul>
-  <p><a href="/">Back to Home</a></p>
+  <a class="back-link" href="../index.html">Back to Home</a>
 </body>
 </html>
