@@ -348,49 +348,182 @@ code {
     As genetics advances, we’re learning more about ancestry, medicine, and what makes each of us unique — all from tiny molecules inside our cells.
   </p>
 </section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Genetics</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #d4f5e9, #ffffff);
+      color: #333;
+      padding: 40px;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #00ffa8;
+    }
+
+    .section {
+      max-width: 800px;
+      margin: 0 auto 50px auto;
+    }
+
+    p {
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
+    .button-link {
+      display: inline-block;
+      margin: 30px auto;
+      padding: 12px 24px;
+      background-color: #2a7f62;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      text-align: center;
+    }
+
+    .button-link:hover {
+      background-color: #1f5946;
+    }
+
+    .quiz-box {
+      background-color: #f0f8ff;
+      border: 2px solid #00bcd4;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 50px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .quiz-box h2 {
+      color: #00bcd4;
+      text-align: center;
+    }
+
+    .quiz-box p {
+      font-size: 1.05em;
+      margin: 10px 0;
+    }
+
+    .quiz-box .correct {
+      background-color: #d0f0c0;
+    }
+
+    .quiz-box .incorrect {
+      background-color: #f9c0c0;
+    }
+
+    .quiz-box .feedback {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧬Genetics🧬</h1>
+
+  <!-- ... Existing Content Here ... -->
+
   <!-- Genetics Quiz Section -->
-<section class="quiz-box">
-  <h2>🧠 Genetics Quiz</h2>
-  <p><strong>1.</strong> What shape is DNA most commonly known for?</p>
-  <ul>
-    <li>A. Ladder</li>
-    <li><strong>B. Double Helix</strong></li>
-    <li>C. Spiral Galaxy</li>
-    <li>D. Zipper</li>
-  </ul>
+  <section class="quiz-box">
+    <h2>🧠 Genetics Quiz</h2>
+    <form id="genetics-quiz">
+      <p><strong>1.</strong> What shape is DNA most commonly known for?</p>
+      <label><input type="radio" name="q1" value="A" /> A. Ladder</label><br />
+      <label><input type="radio" name="q1" value="B" /> B. Double Helix</label><br />
+      <label><input type="radio" name="q1" value="C" /> C. Spiral Galaxy</label><br />
+      <label><input type="radio" name="q1" value="D" /> D. Zipper</label><br /><br />
 
-  <p><strong>2.</strong> What do we call different versions of a gene?</p>
-  <ul>
-    <li>A. Chromosomes</li>
-    <li><strong>B. Alleles</strong></li>
-    <li>C. Traits</li>
-    <li>D. Clones</li>
-  </ul>
+      <p><strong>2.</strong> What do we call different versions of a gene?</p>
+      <label><input type="radio" name="q2" value="A" /> A. Chromosomes</label><br />
+      <label><input type="radio" name="q2" value="B" /> B. Alleles</label><br />
+      <label><input type="radio" name="q2" value="C" /> C. Traits</label><br />
+      <label><input type="radio" name="q2" value="D" /> D. Clones</label><br /><br />
 
-  <p><strong>3.</strong> Which tool lets scientists "edit" genes?</p>
-  <ul>
-    <li>A. Punnett Square</li>
-    <li>B. Microscope</li>
-    <li><strong>C. CRISPR</strong></li>
-    <li>D. Gene Pool</li>
-  </ul>
+      <p><strong>3.</strong> Which tool lets scientists "edit" genes?</p>
+      <label><input type="radio" name="q3" value="A" /> A. Punnett Square</label><br />
+      <label><input type="radio" name="q3" value="B" /> B. Microscope</label><br />
+      <label><input type="radio" name="q3" value="C" /> C. CRISPR</label><br />
+      <label><input type="radio" name="q3" value="D" /> D. Gene Pool</label><br /><br />
 
-  <p><strong>4.</strong> What is the full form of DNA?</p>
-  <ul>
-    <li><strong>A. Deoxyribonucleic Acid</strong></li>
-    <li>B. Digital Nucleic Array</li>
-    <li>C. Data Neutral Agent</li>
-    <li>D. Deep Nerve Analysis</li>
-  </ul>
+      <p><strong>4.</strong> What is the full form of DNA?</p>
+      <label><input type="radio" name="q4" value="A" /> A. Deoxyribonucleic Acid</label><br />
+      <label><input type="radio" name="q4" value="B" /> B. Digital Nucleic Array</label><br />
+      <label><input type="radio" name="q4" value="C" /> C. Data Neutral Agent</label><br />
+      <label><input type="radio" name="q4" value="D" /> D. Deep Nerve Analysis</label><br /><br />
 
-  <p><strong>5.</strong> If both parents are Dd, what's the chance their child will have dimples?</p>
-  <ul>
-    <li>A. 0%</li>
-    <li><strong>B. 75%</strong></li>
-    <li>C. 25%</li>
-    <li>D. 100%</li>
-  </ul>
-</section>
+      <p><strong>5.</strong> If both parents are Dd, what's the chance their child will have dimples?</p>
+      <label><input type="radio" name="q5" value="A" /> A. 0%</label><br />
+      <label><input type="radio" name="q5" value="B" /> B. 75%</label><br />
+      <label><input type="radio" name="q5" value="C" /> C. 25%</label><br />
+      <label><input type="radio" name="q5" value="D" /> D. 100%</label><br /><br />
+
+      <button type="button" onclick="checkAnswers()">Submit</button>
+    </form>
+    <div id="quiz-result" style="margin-top: 20px;"></div>
+  </section>
+
+  <script>
+    function checkAnswers() {
+      const correctAnswers = {
+        q1: "B",
+        q2: "B",
+        q3: "C",
+        q4: "A",
+        q5: "B"
+      };
+
+      let score = 0;
+      let total = Object.keys(correctAnswers).length;
+      let resultHTML = "";
+
+      for (let q in correctAnswers) {
+        let selected = document.querySelector(`input[name="${q}"]:checked`);
+        let labels = document.querySelectorAll(`input[name="${q}"]`);
+
+        labels.forEach(input => {
+          let label = input.parentElement;
+          label.classList.remove("correct", "incorrect");
+          if (input.value === correctAnswers[q]) {
+            if (input.checked) {
+              score++;
+              label.classList.add("correct");
+            } else {
+              label.classList.add("correct");
+            }
+          } else {
+            if (input.checked) {
+              label.classList.add("incorrect");
+            }
+          }
+        });
+      }
+
+      resultHTML = `<p class='feedback'>You got ${score} out of ${total} correct.</p>`;
+      document.getElementById("quiz-result").innerHTML = resultHTML;
+    }
+  </script>
+
+  <div style="text-align: center;">
+    <a href="../Biology/index.html" class="button-link">Back to Biology</a>
+  </div>
+
+</body>
+</html>
+
+  
+
 
 
 
