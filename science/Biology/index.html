@@ -229,37 +229,38 @@
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     <!-- Cell Structures Quiz Section -->
-<section class="quiz-box">
+<section class="quiz-box" style="background-color: #f0f8ff;">
   <h2>🧪 Cell Structures Quiz</h2>
   <form id="cellQuiz">
-    <div class="quiz-question">
+    <div class="quiz-question" style="margin-bottom: 20px;">
       <p><strong>1. What is the function of the nucleus?</strong></p>
-      <label><input type="radio" name="q1" value="B"> It controls cell activities</label><br>
-      <label><input type="radio" name="q1" value="A"> It stores food</label><br>
-      <label><input type="radio" name="q1" value="C"> It helps the cell move</label><br>
-      <label><input type="radio" name="q1" value="D"> It breaks down waste</label>
+      <div><label><input type="radio" name="q1" value="A"> It stores food</label></div>
+      <div><label><input type="radio" name="q1" value="B"> It controls cell activities</label></div>
+      <div><label><input type="radio" name="q1" value="C"> It helps the cell move</label></div>
+      <div><label><input type="radio" name="q1" value="D"> It breaks down waste</label></div>
     </div>
 
-    <div class="quiz-question">
+    <div class="quiz-question" style="margin-bottom: 20px;">
       <p><strong>2. Which organelle is known as the powerhouse of the cell?</strong></p>
-      <label><input type="radio" name="q2" value="A"> Ribosome</label><br>
-      <label><input type="radio" name="q2" value="B"> Endoplasmic reticulum</label><br>
-      <label><input type="radio" name="q2" value="C"> Mitochondria</label><br>
-      <label><input type="radio" name="q2" value="D"> Golgi apparatus</label>
+      <div><label><input type="radio" name="q2" value="A"> Ribosome</label></div>
+      <div><label><input type="radio" name="q2" value="B"> Endoplasmic reticulum</label></div>
+      <div><label><input type="radio" name="q2" value="C"> Mitochondria</label></div>
+      <div><label><input type="radio" name="q2" value="D"> Golgi apparatus</label></div>
     </div>
 
-    <div class="quiz-question">
+    <div class="quiz-question" style="margin-bottom: 20px;">
       <p><strong>3. What does the cell membrane do?</strong></p>
-      <label><input type="radio" name="q3" value="A"> Produces proteins</label><br>
-      <label><input type="radio" name="q3" value="B"> Controls what enters and leaves the cell</label><br>
-      <label><input type="radio" name="q3" value="C"> Stores genetic material</label><br>
-      <label><input type="radio" name="q3" value="D"> Makes ribosomes</label>
+      <div><label><input type="radio" name="q3" value="A"> Produces proteins</label></div>
+      <div><label><input type="radio" name="q3" value="B"> Controls what enters and leaves the cell</label></div>
+      <div><label><input type="radio" name="q3" value="C"> Stores genetic material</label></div>
+      <div><label><input type="radio" name="q3" value="D"> Makes ribosomes</label></div>
     </div>
 
-    <div style="text-align: center; margin-top: 20px;">
+    <div style="text-align: center;">
       <button type="button" onclick="gradeCellQuiz()" style="padding: 10px 20px; font-size: 1em; background-color: #2a7f62; color: white; border: none; border-radius: 6px;">Submit Answers</button>
     </div>
   </form>
+
   <p id="cellScore" style="text-align: center; font-weight: bold; margin-top: 20px;"></p>
 </section>
 
@@ -283,11 +284,7 @@
   }
 </script>
 
-
-</body>
-</html>
-
-  ">
+  <button>
     Explore Genetics
   </button>
 </a>
