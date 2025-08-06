@@ -228,61 +228,252 @@
     border-radius: 8px;
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    <!-- Cell Structures Quiz Section -->
-<section class="quiz-box" style="background-color: #f0f8ff;">
-  <h2>🧪 Cell Structures Quiz</h2>
-  <form id="cellQuiz">
-    <div class="quiz-question" style="margin-bottom: 20px;">
-      <p><strong>1. What is the function of the nucleus?</strong></p>
-      <div><label><input type="radio" name="q1" value="A"> It stores food</label></div>
-      <div><label><input type="radio" name="q1" value="B"> It controls cell activities</label></div>
-      <div><label><input type="radio" name="q1" value="C"> It helps the cell move</label></div>
-      <div><label><input type="radio" name="q1" value="D"> It breaks down waste</label></div>
-    </div>
-
-    <div class="quiz-question" style="margin-bottom: 20px;">
-      <p><strong>2. Which organelle is known as the powerhouse of the cell?</strong></p>
-      <div><label><input type="radio" name="q2" value="A"> Ribosome</label></div>
-      <div><label><input type="radio" name="q2" value="B"> Endoplasmic reticulum</label></div>
-      <div><label><input type="radio" name="q2" value="C"> Mitochondria</label></div>
-      <div><label><input type="radio" name="q2" value="D"> Golgi apparatus</label></div>
-    </div>
-
-    <div class="quiz-question" style="margin-bottom: 20px;">
-      <p><strong>3. What does the cell membrane do?</strong></p>
-      <div><label><input type="radio" name="q3" value="A"> Produces proteins</label></div>
-      <div><label><input type="radio" name="q3" value="B"> Controls what enters and leaves the cell</label></div>
-      <div><label><input type="radio" name="q3" value="C"> Stores genetic material</label></div>
-      <div><label><input type="radio" name="q3" value="D"> Makes ribosomes</label></div>
-    </div>
-
-    <div style="text-align: center;">
-      <button type="button" onclick="gradeCellQuiz()" style="padding: 10px 20px; font-size: 1em; background-color: #2a7f62; color: white; border: none; border-radius: 6px;">Submit Answers</button>
-    </div>
-  </form>
-
-  <p id="cellScore" style="text-align: center; font-weight: bold; margin-top: 20px;"></p>
-</section>
-
-<script>
-  function gradeCellQuiz() {
-    const answers = {
-      q1: "B",
-      q2: "C",
-      q3: "B"
-    };
-
-    let score = 0;
-    for (let q in answers) {
-      const selected = document.querySelector(`input[name="${q}"]:checked`);
-      if (selected && selected.value === answers[q]) {
-        score++;
-      }
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Biology Study Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #d4fc79, #96e6a1);
+      color: #1a1a1a;
+      padding: 20px;
     }
+    h1, h2, h3 {
+      text-align: center;
+      color: #2e4a2d;
+    }
+    p, ul, table {
+      max-width: 900px;
+      margin: 10px auto;
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+    ul li {
+      margin-bottom: 8px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 90%;
+    }
+    table, th, td {
+      border: 1px solid #999;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    a {
+      text-decoration: none;
+    }
+    .button-link {
+      display: inline-block;
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 18px;
+      margin: 5px;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+      text-align: center;
+    }
+    .button-link:hover {
+      background-color: #388e3c;
+    }
+    .organelles {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 40px;
+    }
+    .organelle {
+      width: 300px;
+      text-align: center;
+    }
+    .organelle img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+    .organelle h2 {
+      margin: 10px 0 5px;
+    }
+    .quiz-box {
+      background-color: #f0f8ff;
+      border: 2px solid #00bcd4;
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 800px;
+      margin: 40px auto;
+    }
+    .quiz-box p {
+      font-size: 1.1em;
+    }
+    .submit-button {
+      display: block;
+      margin: 20px auto 0;
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #2a7f62;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .submit-button:hover {
+      background-color: #1f5946;
+    }
+  </style>
+</head>
+<body>
+  <h1>Biology</h1>
+  <p>Biology is the study of living organisms and their interactions with each other and their environments. This course covers:</p>
+  <ul>
+    <li><strong>Cell structure and function:</strong> the differences between prokaryotic and eukaryotic cells, and the roles of organelles like the nucleus, mitochondria and ribosomes.</li>
+    <li><strong>Genetics:</strong> how DNA encodes information, basic Mendelian inheritance, and the structure of chromosomes.</li>
+    <li><strong>Evolution and natural selection:</strong> the mechanisms that drive species change over time.</li>
+    <li><strong>Ecology:</strong> ecosystems, food webs, and the flow of energy and nutrients.</li>
+    <li><strong>Human anatomy:</strong> overview of major organ systems and their functions.</li>
+  </ul>
+  <p>This page gives you a broad overview. We’ll add more detailed topics over time.</p>
+  <p><a class="button-link" href="../index.html">Back to Science</a></p>
+  <hr>
 
-    document.getElementById("cellScore").textContent = `You got ${score} out of 3 correct!`;
-  }
-</script>
+  <section id="cell-structure">
+    <h2 style="color: #1f77b4;">🧬 Cell Structure and Function</h2>
+    <p>Cells are the basic units of life. In this section, we’ll explore the difference between prokaryotic and eukaryotic cells and review the key organelles that help cells function.</p>
+
+    <h3>Prokaryotic vs. Eukaryotic Cells</h3>
+    <p>Prokaryotic cells (like bacteria) do not have a nucleus or membrane-bound organelles. Eukaryotic cells (like plant and animal cells) have a defined nucleus and organelles such as mitochondria and endoplasmic reticulum.</p>
+
+    <h2 style="color:#2ca02c;">⚖️ Comparison: Prokaryotic vs. Eukaryotic Cells</h2>
+    <table>
+      <tr>
+        <th>Feature</th>
+        <th>Prokaryotic Cells</th>
+        <th>Eukaryotic Cells</th>
+      </tr>
+      <tr><td>Nucleus</td><td>No true Nucleus; DNA in nucleoid</td><td>True membrane-bound Nucleus</td></tr>
+      <tr><td>Golgi Apparatus</td><td>Prokaryotic cells do not contain Golgi bodies</td><td>Processes and packages proteins and lipids</td></tr>
+      <tr><td>Cell Size</td><td>0.2–2 µm diameter</td><td>10–100 µm diameter</td></tr>
+      <tr><td>Ribosomes</td><td>Smaller (70S)</td><td>Larger (80S)</td></tr>
+      <tr><td>Cytoskeleton</td><td>Generally absent</td><td>Well developed</td></tr>
+    </table>
+
+    <h3 style="color:#e377c2;">🧩 Major Organelles (Eukaryotic Cells)</h3>
+    <table>
+      <tr><th>Organelle</th><th>Function</th></tr>
+      <tr><td><a class="button-link" href="Nucleus.html">Nucleus</a></td><td>Stores DNA; controls cell activities</td></tr>
+      <tr><td><a class="button-link" href="Mitochondria.html">Mitochondria</a></td><td>Produces energy (ATP) for the cell</td></tr>
+      <tr><td><a class="button-link" href="ribosome.html">Ribosome</a></td><td>Builds proteins from amino acids</td></tr>
+      <tr><td><a class="button-link" href="ER.html">Endoplasmic Reticulum</a></td><td>Rough ER folds proteins; Smooth ER synthesizes lipids</td></tr>
+      <tr><td><a class="button-link" href="Golgi Apparatus.html">Golgi Apparatus</a></td><td>Processes and packages proteins and lipids</td></tr>
+      <tr><td><a class="button-link" href="lysosome.html">Lysosomes</a></td><td>Break down waste and unwanted materials</td></tr>
+      <tr><td><a class="button-link" href="Vacuole.html">Vacuole</a></td><td>Stores materials like water and nutrients</td></tr>
+      <tr><td><a class="button-link" href="Cytoskeleton.html">Cytoskeleton</a></td><td>Supports cell shape and movement</td></tr>
+      <tr><td><a class="button-link" href="Chloroplast.html">Chloroplast</a></td><td>Conducts photosynthesis in plant cells</td></tr>
+    </table>
+  </section>
+
+  <h2>Organelles in Detail</h2>
+  <div class="organelles">
+    <div class="organelle">
+      <img src="Nucleus.png" alt="Nucleus diagram">
+      <h2>Nucleus</h2>
+      <p>Contains DNA and regulates the cell’s activities such as growth, metabolism, and reproduction.</p>
+    </div>
+    <div class="organelle">
+      <img src="Ribosome.png" alt="Ribosome diagram">
+      <h2>Ribosome</h2>
+      <p>Builds proteins by linking amino acids, following genetic instructions from the DNA.</p>
+    </div>
+    <div class="organelle">
+      <img src="ER.png" alt="Endoplasmic Reticulum diagram">
+      <h2>Endoplasmic Reticulum (ER)</h2>
+      <p>Transports proteins and lipids; the rough ER has ribosomes, the smooth ER does not.</p>
+    </div>
+    <div class="organelle">
+      <img src="Golgi.png" alt="Golgi apparatus diagram">
+      <h2>Golgi Apparatus</h2>
+      <p>Packages and distributes proteins and lipids inside and outside the cell.</p>
+    </div>
+    <div class="organelle">
+      <img src="Chloroplast.png" alt="Chloroplast diagram">
+      <h2>Chloroplast</h2>
+      <p>Found in plant cells; performs photosynthesis to convert sunlight into energy.</p>
+    </div>
+    <div class="organelle">
+      <img src="Cell-Membrane.png" alt="Cell membrane diagram">
+      <h2>Cell Membrane</h2>
+      <p>Protective outer layer that controls what enters and exits the cell.</p>
+    </div>
+    <div class="organelle">
+      <img src="Mitochondria.png" alt="Mitochondria diagram">
+      <h2>Mitochondria</h2>
+      <p>Produces ATP through cellular respiration; known as the powerhouse of the cell.</p>
+    </div>
+    <div class="organelle">
+      <img src="Lysosome.png" alt="Lysosome diagram">
+      <h2>Lysosome</h2>
+      <p>Breaks down waste, old cell parts, and harmful substances using digestive enzymes.</p>
+    </div>
+  </div>
+
+  <div class="quiz-box">
+    <h2>🧪 Cell Structures Quiz</h2>
+    <form id="cellQuiz">
+      <div class="quiz-question">
+        <p><strong>1. What is the function of the nucleus?</strong></p>
+        <label><input type="radio" name="q1" value="A"> It stores food</label><br>
+        <label><input type="radio" name="q1" value="B"> It controls cell activities</label><br>
+        <label><input type="radio" name="q1" value="C"> It helps the cell move</label><br>
+        <label><input type="radio" name="q1" value="D"> It breaks down waste</label>
+      </div>
+      <div class="quiz-question">
+        <p><strong>2. Which organelle is known as the powerhouse of the cell?</strong></p>
+        <label><input type="radio" name="q2" value="A"> Ribosome</label><br>
+        <label><input type="radio" name="q2" value="B"> Endoplasmic reticulum</label><br>
+        <label><input type="radio" name="q2" value="C"> Mitochondria</label><br>
+        <label><input type="radio" name="q2" value="D"> Golgi apparatus</label>
+      </div>
+      <div class="quiz-question">
+        <p><strong>3. What does the cell membrane do?</strong></p>
+        <label><input type="radio" name="q3" value="A"> Produces proteins</label><br>
+        <label><input type="radio" name="q3" value="B"> Controls what enters and leaves the cell</label><br>
+        <label><input type="radio" name="q3" value="C"> Stores genetic material</label><br>
+        <label><input type="radio" name="q3" value="D"> Makes ribosomes</label>
+      </div>
+      <button type="button" class="submit-button" onclick="gradeCellQuiz()">Submit Answers</button>
+    </form>
+    <p id="cellScore" style="text-align:center;"></p>
+  </div>
+
+  <div style="text-align:center; margin-top: 30px;">
+    <a class="button-link" href="Genetics/index.html">Explore Genetics</a>
+  </div>
+
+  <script>
+    function gradeCellQuiz() {
+      const answers = {
+        q1: "B",
+        q2: "C",
+        q3: "B"
+      };
+      let score = 0;
+      for (let q in answers) {
+        const selected = document.querySelector(`input[name="${q}"]:checked`);
+        if (selected && selected.value === answers[q]) {
+          score++;
+        }
+      }
+      document.getElementById("cellScore").textContent = `You got ${score} out of 3 correct!`;
+    }
+  </script>
+</body>
+</html>
 
   <button>
     Explore Genetics
