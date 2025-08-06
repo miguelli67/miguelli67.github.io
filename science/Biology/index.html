@@ -228,6 +228,202 @@
     border-radius: 8px;
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Genetics</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #d4f5e9, #ffffff);
+      color: #333;
+      padding: 40px;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #00ffa8;
+    }
+
+    .section {
+      max-width: 800px;
+      margin: 0 auto 50px auto;
+    }
+
+    p {
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
+    .button-link {
+      display: inline-block;
+      margin: 30px auto;
+      padding: 12px 24px;
+      background-color: #2a7f62;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      text-align: center;
+    }
+
+    .button-link:hover {
+      background-color: #1f5946;
+    }
+
+    .fun-box, .info-box, .example-box {
+      padding: 16px;
+      border-radius: 10px;
+      margin: 20px 0;
+      line-height: 1.6;
+      font-size: 1em;
+    }
+
+    .fun-box {
+      background-color: #fff8dc;
+      border-left: 6px solid #f4b400;
+    }
+
+    .info-box {
+      background-color: #e8f0fe;
+      border-left: 6px solid #4285f4;
+    }
+
+    .example-box {
+      background-color: #e6f4ea;
+      border-left: 6px solid #34a853;
+    }
+
+    ul {
+      padding-left: 1.2em;
+    }
+
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .quiz-container {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 20px;
+      background-color: #e0f7fa;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .quiz-container h2 {
+      color: #00796b;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .question p {
+      font-weight: bold;
+    }
+
+    .question label {
+      display: block;
+      margin: 5px 0;
+    }
+
+    #quiz-result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧬Genetics🧬</h1>
+
+  <!-- Existing content above -->
+
+  <!-- Genetics Quiz -->
+  <section class="quiz-container">
+    <h2>🔬 Cell Structures Quiz</h2>
+    <form id="cell-quiz">
+      <div class="question">
+        <p>1. What is the function of the nucleus?</p>
+        <label><input type="radio" name="q1" value="A"> It stores food</label>
+        <label><input type="radio" name="q1" value="B"> It controls cell activities</label>
+        <label><input type="radio" name="q1" value="C"> It helps the cell move</label>
+        <label><input type="radio" name="q1" value="D"> It breaks down waste</label>
+      </div>
+
+      <div class="question">
+        <p>2. Which organelle is known as the powerhouse of the cell?</p>
+        <label><input type="radio" name="q2" value="A"> Ribosome</label>
+        <label><input type="radio" name="q2" value="B"> Endoplasmic reticulum</label>
+        <label><input type="radio" name="q2" value="C"> Mitochondria</label>
+        <label><input type="radio" name="q2" value="D"> Golgi apparatus</label>
+      </div>
+
+      <div class="question">
+        <p>3. What does the cell membrane do?</p>
+        <label><input type="radio" name="q3" value="A"> Produces proteins</label>
+        <label><input type="radio" name="q3" value="B"> Controls what enters and leaves the cell</label>
+        <label><input type="radio" name="q3" value="C"> Stores genetic material</label>
+        <label><input type="radio" name="q3" value="D"> Makes ribosomes</label>
+      </div>
+
+      <div class="question">
+        <p>4. Which organelle is responsible for photosynthesis?</p>
+        <label><input type="radio" name="q4" value="A"> Vacuole</label>
+        <label><input type="radio" name="q4" value="B"> Chloroplast</label>
+        <label><input type="radio" name="q4" value="C"> Cytoplasm</label>
+        <label><input type="radio" name="q4" value="D"> Lysosome</label>
+      </div>
+
+      <div class="question">
+        <p>5. What is the jelly-like substance inside the cell where organelles float?</p>
+        <label><input type="radio" name="q5" value="A"> Membrane</label>
+        <label><input type="radio" name="q5" value="B"> Cytoplasm</label>
+        <label><input type="radio" name="q5" value="C"> Nucleus</label>
+        <label><input type="radio" name="q5" value="D"> Ribosome</label>
+      </div>
+
+      <button type="button" onclick="gradeCellQuiz()">Submit Answers</button>
+      <p id="quiz-result"></p>
+    </form>
+  </section>
+
+  <div style="text-align: center;">
+    <a href="../Biology/index.html" class="button-link">Back to Biology</a>
+  </div>
+
+  <script>
+    function gradeCellQuiz() {
+      const answers = {
+        q1: "B",
+        q2: "C",
+        q3: "B",
+        q4: "B",
+        q5: "B"
+      };
+      let score = 0;
+      for (let q in answers) {
+        const selected = document.querySelector(`input[name="${q}"]:checked`);
+        if (selected && selected.value === answers[q]) {
+          score++;
+        }
+      }
+      const result = document.getElementById("quiz-result");
+      result.textContent = `You got ${score} out of 5 correct.`;
+    }
+  </script>
+
+</body>
+</html>
+
   ">
     Explore Genetics
   </button>
