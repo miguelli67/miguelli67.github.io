@@ -168,6 +168,246 @@
     document.getElementById("evolutionScore").textContent = `You got ${score} out of 2 correct!`;
   }
 </script>
+  <!-- ===== Evolution Sorting Game (paste inside <body>) ===== -->
+<section class="evo-game" id="evo-game">
+  <h2>🦎 Evolution Sorting Game</h2>
+  <p class="evo-sub">Drag each card into the correct category. Beat the clock!</p>
+
+  <div class="evo-controls">
+    <button id="evo-start">Start / Shuffle</button>
+    <button id="evo-reset" disabled>Reset</button>
+    <div class="evo-status">
+      ⏱ <span id="evo-timer">00:00</span> • ✅ <span id="evo-correct">0</span>/<span id="evo-total">0</span>
+    </div>
+  </div>
+
+  <div class="evo-board">
+    <div class="evo-pool" id="evo-pool" aria-label="Card pool"></div>
+
+    <div class="evo-zones">
+      <div class="evo-zone" data-accept="Variation" aria-label="Drop zone: Variation">
+        <h3>Variation</h3>
+        <p class="hint">Differences among individuals</p>
+        <div class="evo-drop"></div>
+      </div>
+      <div class="evo-zone" data-accept="Adaptation" aria-label="Drop zone: Adaptation">
+        <h3>Adaptation</h3>
+        <p class="hint">Trait that improves survival/reproduction</p>
+        <div class="evo-drop"></div>
+      </div>
+      <div class="evo-zone" data-accept="Natural Selection" aria-label="Drop zone: Natural Selection">
+        <h3>Natural Selection</h3>
+        <p class="hint">Environment “selects” favorable traits</p>
+        <div class="evo-drop"></div>
+      </div>
+      <div class="evo-zone" data-accept="Mutation" aria-label="Drop zone: Mutation">
+        <h3>Mutation</h3>
+        <p class="hint">DNA change introducing new variation</p>
+        <div class="evo-drop"></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="evo-result" id="evo-result"></p>
+</section>
+
+<style>
+  /* ===== Scoped styles for the Evolution game ===== */
+  .evo-game{max-width:1000px;margin:40px auto;padding:20px;border-radius:12px;background:#f7fffb;box-shadow:0 6px 16px rgba(0,0,0,.08);font-family:inherit}
+  .evo-game h2{text-align:center;color:#027a62;margin:0 0 6px}
+  .evo-sub{text-align:center;margin:0 0 16px;color:#2b2b2b}
+  .evo-controls{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+  .evo-controls button{border:0;border-radius:8px;padding:10px 16px;font-weight:600;cursor:pointer}
+  #evo-start{background:#2a7f62;color:#fff}
+  #evo-start:hover{background:#1f5b47}
+  #evo-reset{background:#ececec}
+  #evo-reset:disabled{opacity:.5;cursor:not-allowed}
+  .evo-status{font-weight:600}
+  .evo-board{display:grid;grid-template-columns:1fr;gap:16px}
+  @media (min-width:900px){.evo-board{grid-template-columns:320px 1fr}}
+  .evo-pool{min-height:320px;border:2px dashed #c7e9d2;border-radius:10px;background:#ffffff;padding:12px;display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start}
+  .evo-card{user-select:none;background:#fff;border:1px solid #d8e8e1;border-left:6px solid #2a7f62;border-radius:10px;padding:10px 12px;box-shadow:0 2px 8px rgba(0,0,0,.06);cursor:grab;flex:1 1 280px;max-width:100%}
+  .evo-card:active{cursor:grabbing}
+  .evo-card .tag{display:inline-block;font-size:.75rem;background:#e7f6f1;color:#1b5e4a;border-radius:6px;padding:2px 8px;margin-bottom:6px}
+  .evo-card p{margin:6px 0 0;line-height:1.35}
+  .evo-zones{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media (min-width:900px){.evo-zones{grid-template-columns:repeat(4,1fr)}}
+  .evo-zone{background:#ffffff;border:2px solid #c7e9d2;border-radius:10px;padding:10px;min-height:180px;display:flex;flex-direction:column}
+  .evo-zone h3{margin:0 0 4px;color:#155c4d}
+  .evo-zone .hint{margin:0 0 8px;color:#5d6b63;font-size:.9rem}
+  .evo-drop{flex:1;border:2px dashed #cfe9e1;border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:8px}
+  .evo-zone.evo-over{background:#f0fff7;box-shadow:inset 0 0 0 2px #8fe0c4}
+  .evo-card.correct{border-left-color:#2e7d32;background:#f1fff3}
+  .evo-card.incorrect{border-left-color:#c62828;background:#fff3f3}
+  .evo-result{text-align:center;font-weight:700;margin-top:14px}
+</style>
+
+<script>
+(function(){
+  // ====== DATA: cards to sort ======
+  const CARDS = [
+    { text: "Peppered moth color differences in polluted vs. clean forests", cat: "Natural Selection" },
+    { text: "Random DNA base change that creates a new allele", cat: "Mutation" },
+    { text: "Individuals in a population have different beak sizes", cat: "Variation" },
+    { text: "Thick fur in arctic foxes improves survival in cold climates", cat: "Adaptation" },
+    { text: "Bacteria gaining antibiotic resistance over generations", cat: "Natural Selection" },
+    { text: "Point insertion that shifts the reading frame", cat: "Mutation" },
+    { text: "Some finches naturally have longer beaks than others", cat: "Variation" },
+    { text: "Camouflage pattern that helps insects avoid predators", cat: "Adaptation" }
+  ];
+
+  const game = document.getElementById('evo-game');
+  const pool = game.querySelector('#evo-pool');
+  const zones = Array.from(game.querySelectorAll('.evo-zone'));
+  const btnStart = game.querySelector('#evo-start');
+  const btnReset = game.querySelector('#evo-reset');
+  const timerEl = game.querySelector('#evo-timer');
+  const correctEl = game.querySelector('#evo-correct');
+  const totalEl = game.querySelector('#evo-total');
+  const resultEl = game.querySelector('#evo-result');
+
+  let timer=0, tRef=null, correct=0, placed=0, started=false;
+
+  function mmss(s){const m=Math.floor(s/60),sec=s%60;return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;}
+  function startTimer(){clearInterval(tRef); tRef=setInterval(()=>{timer++; timerEl.textContent=mmss(timer);},1000);}
+  function stopTimer(){clearInterval(tRef);}
+
+  function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
+
+  function renderCards(){
+    pool.innerHTML = '';
+    const data = CARDS.map(c=>({...c,id:cryptoRandom()}));
+    shuffle(data);
+    totalEl.textContent = data.length;
+    correct=0; placed=0;
+    correctEl.textContent = '0';
+    resultEl.textContent = '';
+    data.forEach(c=>{
+      const el = document.createElement('div');
+      el.className = 'evo-card';
+      el.draggable = true;
+      el.dataset.cat = c.cat;
+      el.dataset.id = c.id;
+      el.innerHTML = `<span class="tag">Card</span><p>${c.text}</p>`;
+      addDnD(el);
+      pool.appendChild(el);
+    });
+  }
+
+  function addDnD(card){
+    // Mouse/desktop
+    card.addEventListener('dragstart', e=>{
+      e.dataTransfer.setData('text/plain', card.dataset.id);
+      setTimeout(()=>card.classList.add('dragging'),0);
+    });
+    card.addEventListener('dragend', ()=>card.classList.remove('dragging'));
+    // Touch/mobile
+    card.addEventListener('touchstart', touchDragStart, {passive:false});
+    card.addEventListener('touchmove', touchDragMove, {passive:false});
+    card.addEventListener('touchend', touchDragEnd);
+  }
+
+  // Touch helpers
+  let touchGhost=null, touchSource=null;
+  function touchDragStart(e){
+    e.preventDefault();
+    touchSource = e.currentTarget;
+    touchGhost = touchSource.cloneNode(true);
+    touchGhost.style.position='fixed';
+    touchGhost.style.pointerEvents='none';
+    touchGhost.style.opacity='0.85';
+    touchGhost.style.transform='rotate(1deg)';
+    touchGhost.style.left = (e.touches[0].clientX-80)+'px';
+    touchGhost.style.top  = (e.touches[0].clientY-20)+'px';
+    touchGhost.style.width = touchSource.getBoundingClientRect().width+'px';
+    touchGhost.classList.add('evo-card');
+    document.body.appendChild(touchGhost);
+  }
+  function touchDragMove(e){
+    if(!touchGhost) return;
+    e.preventDefault();
+    touchGhost.style.left = (e.touches[0].clientX-80)+'px';
+    touchGhost.style.top  = (e.touches[0].clientY-20)+'px';
+  }
+  function touchDragEnd(e){
+    if(!touchGhost) return;
+    const x=e.changedTouches[0].clientX, y=e.changedTouches[0].clientY;
+    const target = document.elementFromPoint(x,y);
+    const zone = target && (target.closest('.evo-zone')||target.closest('.evo-drop'));
+    if(zone){
+      const realZone = zone.closest('.evo-zone');
+      dropCardIntoZone(touchSource, realZone);
+    }
+    document.body.removeChild(touchGhost);
+    touchGhost=null; touchSource=null;
+  }
+
+  zones.forEach(z=>{
+    const drop = z.querySelector('.evo-drop');
+    ['dragenter','dragover'].forEach(ev=>{
+      drop.addEventListener(ev, e=>{e.preventDefault(); z.classList.add('evo-over');});
+    });
+    ['dragleave','drop'].forEach(ev=>{
+      drop.addEventListener(ev, e=>{z.classList.remove('evo-over');});
+    });
+    drop.addEventListener('drop', e=>{
+      const id = e.dataTransfer.getData('text/plain');
+      const card = game.querySelector(`.evo-card[data-id="${id}"]`);
+      if(card) dropCardIntoZone(card, z);
+    });
+  });
+
+  function dropCardIntoZone(card, zone){
+    const expected = zone.getAttribute('data-accept');
+    const dropArea = zone.querySelector('.evo-drop');
+    // already placed? allow move between zones
+    if(card.parentElement!==dropArea) {
+      dropArea.appendChild(card);
+    }
+    placed++;
+    if(card.dataset.cat===expected){
+      if(!card.classList.contains('correct')){ correct++; correctEl.textContent = String(correct); }
+      card.classList.add('correct'); card.classList.remove('incorrect');
+    } else {
+      card.classList.add('incorrect'); card.classList.remove('correct');
+    }
+    checkWin();
+  }
+
+  function checkWin(){
+    const total = Number(totalEl.textContent||'0');
+    if(correct===total){
+      stopTimer();
+      resultEl.textContent = `🎉 Perfect! ${correct}/${total} • Time ${timerEl.textContent}`;
+    }
+  }
+
+  function cryptoRandom(){
+    // fallback for older browsers
+    if(window.crypto && crypto.getRandomValues){
+      const a=new Uint32Array(1); crypto.getRandomValues(a); return String(a[0]);
+    }
+    return String(Math.floor(Math.random()*1e9));
+  }
+
+  btnStart.addEventListener('click', ()=>{
+    renderCards();
+    started=true; timer=0; timerEl.textContent='00:00'; startTimer();
+    btnReset.disabled=false;
+  });
+  btnReset.addEventListener('click', ()=>{
+    stopTimer(); timer=0; timerEl.textContent='00:00';
+    correct=0; correctEl.textContent='0'; resultEl.textContent='';
+    pool.innerHTML=''; zones.forEach(z=>z.querySelector('.evo-drop').innerHTML='');
+    btnReset.disabled=true; started=false;
+  });
+
+  // initial setup
+  totalEl.textContent = '0';
+})();
+</script>
+<!-- ===== /Evolution Sorting Game ===== -->
+
 
 </body>
 </html>
