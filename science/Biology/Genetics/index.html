@@ -514,6 +514,251 @@ code {
       document.getElementById("quiz-result").innerHTML = resultHTML;
     }
   </script>
+  <!-- ===== Build-a-Baby Genetics Game ===== -->
+<section id="build-a-baby" style="max-width: 980px; margin: 40px auto; background:#f7fffb; border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,.08); padding:20px;">
+  <h2 style="text-align:center; color:#2a7f62;">🧬 Build-a-Baby (Mouse Edition)</h2>
+  <p style="text-align:center; margin-top:6px;">Pick parent genotypes for each trait, then generate an offspring and see the predicted phenotype!</p>
+
+  <style>
+    .bab-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 900px){ .bab-grid{ grid-template-columns: 1fr 1fr; } }
+    .bab-card { background:#fff; border:1px solid #d8e8e1; border-radius:10px; padding:16px; }
+    .bab-card h3 { margin:0 0 8px; color:#155c4d; }
+    .bab-row { display:flex; gap:10px; align-items:center; margin:8px 0; flex-wrap:wrap; }
+    .bab-row label { min-width: 150px; font-weight:600; }
+    select { padding:8px; border-radius:8px; border:1px solid #c7d9d2; }
+    .bab-actions { text-align:center; margin-top:12px; }
+    .bab-btn { background:#2a7f62; color:#fff; border:0; padding:10px 16px; border-radius:8px; font-weight:700; cursor:pointer; }
+    .bab-btn:hover{ background:#1f5b47; }
+    .bab-output { display:grid; gap:16px; grid-template-columns: 1fr; margin-top:16px; }
+    @media (min-width: 900px){ .bab-output{ grid-template-columns: 360px 1fr; } }
+    .baby-box { background:#ffffff; border:1px solid #d8e8e1; border-radius:10px; padding:12px; text-align:center; }
+    .baby-stats { background:#ffffff; border:1px solid #d8e8e1; border-radius:10px; padding:12px; }
+    .stat { margin:4px 0; }
+    table.bab { width:100%; border-collapse:collapse; }
+    table.bab th, table.bab td { border:1px solid #d8e8e1; padding:6px 8px; text-align:center; }
+    .muted { color:#596b63; font-size:.95rem; }
+    .legend { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:8px; font-size:.9rem; color:#445; }
+    .legend span { display:inline-block; padding:4px 8px; background:#eef7f3; border-radius:6px; }
+  </style>
+
+  <div class="bab-grid">
+    <!-- Parent A -->
+    <div class="bab-card">
+      <h3>Parent A Genotypes</h3>
+      <div class="bab-row">
+        <label>Coat Color (B/b):</label>
+        <select id="A_B">
+          <option>BB</option><option>Bb</option><option>bb</option>
+        </select>
+      </div>
+      <div class="bab-row">
+        <label>Ear Size (E/e):</label>
+        <select id="A_E">
+          <option>EE</option><option>Ee</option><option>ee</option>
+        </select>
+      </div>
+      <div class="bab-row">
+        <label>Tail Length (T/t):</label>
+        <select id="A_T">
+          <option>TT</option><option>Tt</option><option>tt</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Parent B -->
+    <div class="bab-card">
+      <h3>Parent B Genotypes</h3>
+      <div class="bab-row">
+        <label>Coat Color (B/b):</label>
+        <select id="B_B">
+          <option>BB</option><option>Bb</option><option>bb</option>
+        </select>
+      </div>
+      <div class="bab-row">
+        <label>Ear Size (E/e):</label>
+        <select id="B_E">
+          <option>EE</option><option>Ee</option><option>ee</option>
+        </select>
+      </div>
+      <div class="bab-row">
+        <label>Tail Length (T/t):</label>
+        <select id="B_T">
+          <option>TT</option><option>Tt</option><option>tt</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="bab-actions">
+    <button class="bab-btn" id="makeBaby">Make Baby</button>
+    <p class="muted">Uses simple Mendelian dominance: B, E, T are dominant over b, e, t.</p>
+  </div>
+
+  <div class="bab-output">
+    <div class="baby-box">
+      <h3>Baby Preview</h3>
+      <!-- SVG avatar updates here -->
+      <div id="babyAvatar"></div>
+      <div class="legend">
+        <span>Black coat = B_</span>
+        <span>Brown coat = bb</span>
+        <span>Big ears = E_</span>
+        <span>Small ears = ee</span>
+        <span>Long tail = T_</span>
+        <span>Short tail = tt</span>
+      </div>
+    </div>
+
+    <div class="baby-stats">
+      <h3>Genotype & Phenotype</h3>
+      <div class="stat" id="geno"></div>
+      <div class="stat" id="pheno"></div>
+
+      <h3 style="margin-top:12px;">Punnett Summary (per trait)</h3>
+      <table class="bab" id="punnett">
+        <thead><tr><th>Trait</th><th>Genotype Ratios</th><th>Phenotype Ratios</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Trait config
+    const TRAITS = {
+      coat:  { gene:'B', dom:'Black', rec:'Brown' },
+      ears:  { gene:'E', dom:'Big ears', rec:'Small ears' },
+      tail:  { gene:'T', dom:'Long tail', rec:'Short tail' }
+    };
+
+    const selects = {
+      A_B: document.getElementById('A_B'),
+      A_E: document.getElementById('A_E'),
+      A_T: document.getElementById('A_T'),
+      B_B: document.getElementById('B_B'),
+      B_E: document.getElementById('B_E'),
+      B_T: document.getElementById('B_T')
+    };
+
+    document.getElementById('makeBaby').addEventListener('click', ()=>{
+      // read parent genotypes
+      const parents = {
+        A:{ B:selects.A_B.value, E:selects.A_E.value, T:selects.A_T.value },
+        B:{ B:selects.B_B.value, E:selects.B_E.value, T:selects.B_T.value }
+      };
+
+      // offspring genotype per trait (random from Punnett outcomes)
+      const baby = {};
+      const punnettSummary = {};
+      ['B','E','T'].forEach(g=>{
+        const outcomes = cross(parents.A[g], parents.B[g]); // all 4 combos
+        const pick = outcomes[Math.floor(Math.random()*outcomes.length)];
+        baby[g] = normalizeAlleles(pick);
+        punnettSummary[g] = summarize(outcomes);
+      });
+
+      // phenotype
+      const phenotype = {
+        coat: hasDominant(baby.B,'B') ? TRAITS.coat.dom : TRAITS.coat.rec,
+        ears: hasDominant(baby.E,'E') ? TRAITS.ears.dom : TRAITS.ears.rec,
+        tail: hasDominant(baby.T,'T') ? TRAITS.tail.dom : TRAITS.tail.rec
+      };
+
+      // update UI
+      document.getElementById('geno').textContent = 
+        `Genotype: B=${baby.B}, E=${baby.E}, T=${baby.T}`;
+      document.getElementById('pheno').textContent = 
+        `Phenotype: ${phenotype.coat}, ${phenotype.ears}, ${phenotype.tail}`;
+      renderPunnett(punnettSummary);
+      renderAvatar(phenotype);
+    });
+
+    // Punnett cross of two-locus genotype (e.g., "Bb" x "bb")
+    function cross(g1,g2){
+      const a1 = [g1[0], g1[1]];
+      const a2 = [g2[0], g2[1]];
+      const kids = [];
+      for(let i=0;i<2;i++){
+        for(let j=0;j<2;j++){
+          kids.push(a1[i]+a2[j]);
+        }
+      }
+      return kids.map(normalizeAlleles);
+    }
+
+    // Make capital-first order (e.g., "bB" -> "Bb")
+    function normalizeAlleles(pair){
+      const [x,y] = pair.split('');
+      const cap = [x,y].sort((m,n)=>{
+        const A = (m===m.toUpperCase()), B = (n===n.toUpperCase());
+        return A===B ? 0 : (A ? -1 : 1);
+      });
+      return cap.join('');
+    }
+
+    function hasDominant(geno, geneLetter){
+      return geno.includes(geneLetter);
+    }
+
+    function summarize(outcomes){
+      const counts = {};
+      outcomes.forEach(g=>{ const k = normalizeAlleles(g); counts[k]=(counts[k]||0)+1; });
+      // phenotype ratios
+      const total = outcomes.length;
+      const domK = Object.keys(counts).filter(k => /[A-Z]/.test(k[0]) || /[A-Z]/.test(k[1]));
+      const domCount = domK.reduce((s,k)=>s+counts[k],0);
+      const recCount = total - domCount;
+      return { genotypes: counts, phenotypes: {dom:domCount, rec:recCount}, total };
+    }
+
+    function renderPunnett(summary){
+      const tbody = document.querySelector('#punnett tbody');
+      tbody.innerHTML = '';
+      const map = { B:'Coat Color', E:'Ear Size', T:'Tail Length' };
+      Object.keys(summary).forEach(g=>{
+        const row = document.createElement('tr');
+        const genos = Object.entries(summary[g].genotypes)
+          .map(([k,v])=>`${k}:${v}`).join('  ');
+        const phens = `Dominant:${summary[g].phenotypes.dom}  Recessive:${summary[g].phenotypes.rec}`;
+        row.innerHTML = `<td>${map[g]}</td><td>${genos}</td><td>${phens}</td>`;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Inline SVG avatar that updates with phenotype
+    function renderAvatar(ph){
+      const coatFill = (ph.coat.includes('Black')) ? '#222' : '#7a4b28';
+      const earScale = (ph.ears.includes('Big')) ? 1 : 0.7;
+      const tailLen = (ph.tail.includes('Long')) ? 90 : 55;
+
+      const svg = `
+        <svg width="320" height="240" viewBox="0 0 320 240">
+          <!-- tail -->
+          <path d="M 210 170 q ${tailLen} -10 ${tailLen} 30" fill="none" stroke="#a27c55" stroke-width="8" stroke-linecap="round"/>
+          <!-- body -->
+          <ellipse cx="160" cy="150" rx="90" ry="60" fill="${coatFill}" />
+          <!-- head -->
+          <circle cx="120" cy="110" r="45" fill="${coatFill}" />
+          <!-- ears -->
+          <g transform="translate(120,75) scale(${earScale})">
+            <circle cx="-30" cy="0" r="22" fill="${coatFill}" />
+            <circle cx="30" cy="0" r="22" fill="${coatFill}" />
+            <circle cx="-30" cy="0" r="12" fill="#f5cbd3" />
+            <circle cx="30" cy="0" r="12" fill="#f5cbd3" />
+          </g>
+          <!-- nose & eye -->
+          <circle cx="140" cy="110" r="5" fill="#000" />
+          <circle cx="155" cy="120" r="3" fill="#000" />
+        </svg>`;
+      document.getElementById('babyAvatar').innerHTML = svg;
+    }
+
+    // initial render so there’s something to see
+    renderAvatar({coat:'Black', ears:'Big ears', tail:'Long tail'});
+  </script>
+</section>
+<!-- ===== /Build-a-Baby Genetics Game ===== -->
+
 
   <div style="text-align: center;">
     <a href="../index.html" class="button-link">Back to Biology</a>
