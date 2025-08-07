@@ -1,1 +1,271 @@
-67
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SVG Baby Animal Template</title>
+  <style>
+    :root {
+      --fur: #b68d5e; /* base fur color */
+      --accent: #8a5a2b; /* ear/stripe */
+      --eye: #222; /* eye fill */
+      --pupil: #000; /* pupil */
+      --nose: #3b2f2f; /* nose fill */
+      --bg: #f6f7fb;
+      --grid: rgba(0,0,0,.08);
+    }
+
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: var(--bg);
+      color:#111;
+      display:grid; grid-template-columns: 320px 1fr; min-height:100vh;
+    }
+    aside{padding:20px; border-right:1px solid #e5e7eb; background:#fff}
+    main{display:grid; place-items:center;}
+    h1{font-size:20px; margin:0 0 12px}
+    fieldset{border:1px solid #e5e7eb; border-radius:12px; padding:12px; margin:12px 0}
+    legend{padding:0 6px}
+    label{display:block; margin:8px 0}
+    .row{display:flex; gap:8px; flex-wrap:wrap}
+    button{padding:8px 10px; border:1px solid #d1d5db; background:#fff; border-radius:10px; cursor:pointer}
+    button[aria-pressed="true"]{outline:2px solid #111}
+
+    /* SVG sizing */
+    .stage{width: min(92vw, 720px); height: min(72vh, 520px); background:white; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.08); overflow:hidden;}
+    svg{width:100%; height:100%; display:block}
+
+    /* Helpful grid toggle */
+    .grid line{stroke:var(--grid); stroke-width:1}
+    .grid .bold{stroke:rgba(0,0,0,.18)}
+
+    /* Basic styles for parts */
+    .fur{fill:var(--fur)}
+    .accent{fill:var(--accent)}
+    .eye-fill{fill:var(--eye)}
+    .pupil{fill:var(--pupil)}
+    .nose{fill:var(--nose)}
+
+    /* Hidden by default; JS toggles visibility */
+    [data-trait]{display:none}
+    [data-trait].on{display:inline}
+  </style>
+</head>
+<body>
+  <aside>
+    <h1>Build‑A‑Baby: SVG Animal</h1>
+    <p>Use these toggles to mix traits (think dominant/recessive). This is a clean starter you can copy into your site.</p>
+
+    <fieldset>
+      <legend>Ears (size)</legend>
+      <div class="row" data-group="ears">
+        <button data-choice="small" aria-pressed="true">small (s)</button>
+        <button data-choice="large">large (L)</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Nose (shape)</legend>
+      <div class="row" data-group="nose">
+        <button data-choice="round" aria-pressed="true">round (r)</button>
+        <button data-choice="triangle">triangle (T)</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Tail (length)</legend>
+      <div class="row" data-group="tail">
+        <button data-choice="short" aria-pressed="true">short (t)</button>
+        <button data-choice="long">long (L)</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Eye color</legend>
+      <div class="row" data-group="eyes">
+        <button data-choice="dark" aria-pressed="true">dark (D)</button>
+        <button data-choice="blue">blue (b)</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Fur color</legend>
+      <div class="row">
+        <button data-fur="#b68d5e" aria-pressed="true">tawny</button>
+        <button data-fur="#c8c1b8">cream</button>
+        <button data-fur="#8f5f3f">brown</button>
+        <button data-fur="#c0c9d6">gray</button>
+      </div>
+    </fieldset>
+
+    <div class="row">
+      <button id="toggle-grid">Toggle Grid</button>
+      <button id="randomize">Random Mix</button>
+    </div>
+
+    <p style="font-size:12px;color:#555">Tip: open the SVG in a vector editor later if you want bezier-curved custom shapes. For pure HTML+SVG, everything below is just coordinates.</p>
+  </aside>
+
+  <main>
+    <div class="stage">
+      <svg viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Baby animal">
+        <!-- GRID (for learning coordinates) -->
+        <g class="grid" id="grid" opacity=".8">
+          <!-- vertical lines every 20px -->
+          <g>
+            <script type="application/ecmascript"><![CDATA[
+              // empty script tag so HTML validators ignore dynamic grid build in JS
+            ]]></script>
+          </g>
+        </g>
+
+        <!-- BACKGROUND -->
+        <rect x="0" y="0" width="600" height="420" fill="#ffffff" />
+
+        <!-- ANIMAL GROUP - translate to center whole animal -->
+        <g id="animal" transform="translate(300,210)">
+          <!-- Body (ellipse): cx/cy are 0,0 because we translated the group to center -->
+          <ellipse class="fur" cx="0" cy="40" rx="120" ry="90" />
+
+          <!-- Head (circle) -->
+          <circle class="fur" cx="0" cy="-40" r="80" />
+
+          <!-- Ears (two variants) -->
+          <g id="ears">
+            <!-- small -->
+            <g data-trait="ears:small" class="on">
+              <circle class="fur" cx="-50" cy="-105" r="24" />
+              <circle class="fur" cx="50" cy="-105" r="24" />
+              <circle class="accent" cx="-50" cy="-105" r="12" />
+              <circle class="accent" cx="50" cy="-105" r="12" />
+            </g>
+            <!-- large -->
+            <g data-trait="ears:large">
+              <ellipse class="fur" cx="-60" cy="-120" rx="32" ry="40" />
+              <ellipse class="fur" cx="60" cy="-120" rx="32" ry="40" />
+              <ellipse class="accent" cx="-60" cy="-120" rx="16" ry="22" />
+              <ellipse class="accent" cx="60" cy="-120" rx="16" ry="22" />
+            </g>
+          </g>
+
+          <!-- Eyes (positioned from face center) -->
+          <g id="eyes">
+            <g data-trait="eyes:dark" class="on">
+              <circle class="eye-fill" cx="-26" cy="-52" r="10" />
+              <circle class="eye-fill" cx="26" cy="-52" r="10" />
+              <circle class="pupil" cx="-26" cy="-52" r="4" />
+              <circle class="pupil" cx="26" cy="-52" r="4" />
+            </g>
+            <g data-trait="eyes:blue">
+              <circle fill="#4d76a6" cx="-26" cy="-52" r="10" />
+              <circle fill="#4d76a6" cx="26" cy="-52" r="10" />
+              <circle class="pupil" cx="-26" cy="-52" r="4" />
+              <circle class="pupil" cx="26" cy="-52" r="4" />
+            </g>
+          </g>
+
+          <!-- Nose (two variants) -->
+          <g id="nose">
+            <!-- round nose uses circle: cx, cy, r -->
+            <circle data-trait="nose:round" class="nose on" cx="0" cy="-30" r="8" />
+            <!-- triangle nose uses polygon: points="x1,y1 x2,y2 x3,y3" -->
+            <polygon data-trait="nose:triangle" class="nose" points="-8,-26 8,-26 0,-12" />
+          </g>
+
+          <!-- Mouth -->
+          <path d="M -18 -16 Q 0 4 18 -16" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+
+          <!-- Tail variants -->
+          <g id="tail">
+            <path data-trait="tail:short" class="on" d="M 115 70 q 40 10 40 -10" fill="none" stroke="var(--fur)" stroke-width="16" stroke-linecap="round" />
+            <path data-trait="tail:long" d="M 115 70 q 60 10 60 -20 q 10 -20 -10 -30" fill="none" stroke="var(--fur)" stroke-width="16" stroke-linecap="round" />
+          </g>
+
+          <!-- Simple feet -->
+          <ellipse class="fur" cx="-45" cy="120" rx="26" ry="14" />
+          <ellipse class="fur" cx="45" cy="120" rx="26" ry="14" />
+        </g>
+      </svg>
+    </div>
+  </main>
+
+  <script>
+    // --- build a visible 20px grid to learn coordinates ---
+    const svg = document.querySelector('svg');
+    const grid = document.getElementById('grid');
+    function drawGrid(){
+      const w = 600, h = 420, step = 20;
+      // remove old
+      grid.innerHTML = '';
+      for(let x=0; x<=w; x+=step){
+        const v = document.createElementNS('http://www.w3.org/2000/svg','line');
+        v.setAttribute('x1', x); v.setAttribute('y1', 0);
+        v.setAttribute('x2', x); v.setAttribute('y2', h);
+        v.setAttribute('class', (x%100===0) ? 'bold' : '');
+        grid.appendChild(v);
+      }
+      for(let y=0; y<=h; y+=step){
+        const v = document.createElementNS('http://www.w3.org/2000/svg','line');
+        v.setAttribute('x1', 0); v.setAttribute('y1', y);
+        v.setAttribute('x2', w); v.setAttribute('y2', y);
+        v.setAttribute('class', (y%100===0) ? 'bold' : '');
+        grid.appendChild(v);
+      }
+    }
+    drawGrid();
+    let gridOn = true;
+
+    // --- trait toggling helpers ---
+    function setTrait(group, choice){
+      // turn off all
+      document.querySelectorAll(`[data-trait^="${group}:"]`).forEach(el=>el.classList.remove('on'));
+      // turn on selected
+      document.querySelectorAll(`[data-trait="${group}:${choice}"]`).forEach(el=>el.classList.add('on'));
+      // update buttons
+      const row = document.querySelector(`[data-group="${group}"]`);
+      row?.querySelectorAll('button').forEach(b=>{
+        b.setAttribute('aria-pressed', String(b.dataset.choice === choice));
+      });
+    }
+
+    // wire up groups
+    document.querySelectorAll('[data-group]').forEach(row=>{
+      row.addEventListener('click', (e)=>{
+        const b = e.target.closest('button');
+        if(!b) return;
+        const group = row.dataset.group;
+        const choice = b.dataset.choice;
+        setTrait(group, choice);
+      })
+    })
+
+    // fur color buttons
+    document.querySelectorAll('[data-fur]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        document.documentElement.style.setProperty('--fur', btn.dataset.fur);
+        document.querySelectorAll('[data-fur]').forEach(b=>b.setAttribute('aria-pressed','false'));
+        btn.setAttribute('aria-pressed','true');
+      })
+    })
+
+    // grid toggle
+    document.getElementById('toggle-grid').addEventListener('click',()=>{
+      gridOn = !gridOn; grid.style.display = gridOn ? 'inline' : 'none';
+    });
+
+    // randomize traits (simulating allele mix)
+    const choices = {
+      ears:['small','large'],
+      nose:['round','triangle'],
+      tail:['short','long'],
+      eyes:['dark','blue']
+    };
+    document.getElementById('randomize').addEventListener('click',()=>{
+      Object.entries(choices).forEach(([g,opts])=>{
+        const pick = opts[Math.floor(Math.random()*opts.length)];
+        setTrait(g, pick);
+      })
+    })
+  </script>
+</body>
+</html>
