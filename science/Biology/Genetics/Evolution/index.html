@@ -105,6 +105,130 @@
   <div style="text-align: center;">
     <a href="../index.html" class="button-link">Back to Biology</a>
   </div>
+<div class="section">
+  <h2>What is Evolution?</h2>
+  <p>Evolution is the change in the characteristics of a species over generations. It relies on the process of natural selection, where certain traits become more common because they help organisms survive and reproduce in their environment.</p>
+  <img src="GiraffeEvolution.png" alt="Giraffe Evolution" class="evolution-image" />
+  <p>For example, giraffes with longer necks were better at reaching food high up in trees. Over time, this trait became more common in the population, leading to the giraffes we see today.</p>
+</div>
+
+<div class="section">
+  <h2>Natural Selection</h2>
+  <p>Natural selection is a mechanism by which individuals with traits that are better suited to their environment are more likely to survive and reproduce. These traits are passed down to offspring, and over many generations, can change the traits of the population.</p>
+  <ul>
+    <li><strong>Variation:</strong> Individuals in a population vary in traits.</li>
+    <li><strong>Adaptation:</strong> Some traits provide advantages.</li>
+    <li><strong>Survival:</strong> Those with advantageous traits tend to survive and reproduce.</li>
+    <li><strong>Reproduction:</strong> Offspring inherit the traits that helped their parents survive.</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <h2 style="text-align: center;">🧪 Evolution Quiz</h2>
+  <form id="evolutionQuiz">
+    <div class="quiz-question">
+      <p>1. What does evolution explain?</p>
+      <label><input type="radio" name="q1" value="A"> How individuals grow during their lifetime</label><br>
+      <label><input type="radio" name="q1" value="B"> How traits are passed through generations in a population</label><br>
+      <label><input type="radio" name="q1" value="C"> How planets form</label><br>
+      <label><input type="radio" name="q1" value="D"> Why animals sleep</label>
+    </div>
+
+    <div class="quiz-question">
+      <p>2. Which of the following best describes natural selection?</p>
+      <label><input type="radio" name="q2" value="A"> All individuals survive and reproduce equally</label><br>
+      <label><input type="radio" name="q2" value="B"> Random chance determines survival</label><br>
+      <label><input type="radio" name="q2" value="C"> Individuals with beneficial traits are more likely to survive and reproduce</label><br>
+      <label><input type="radio" name="q2" value="D"> Only the strongest animals survive</label>
+    </div>
+
+    <div style="text-align:center;">
+      <button type="button" onclick="gradeEvolutionQuiz()" style="padding: 10px 20px; font-size: 1em; background-color: #2a7f62; color: white; border: none; border-radius: 6px;">Submit Answers</button>
+    </div>
+  </form>
+  <p id="evolutionScore" style="text-align: center; font-weight: bold; margin-top: 20px;"></p>
+</div>
+
+<script>
+  function gradeEvolutionQuiz() {
+    const answers = {
+      q1: "B",
+      q2: "C"
+    };
+
+    let score = 0;
+    for (let q in answers) {
+      const selected = document.querySelector(`input[name="${q}"]:checked`);
+      if (selected && selected.value === answers[q]) {
+        score++;
+      }
+    }
+
+    document.getElementById("evolutionScore").textContent = `You got ${score} out of 2 correct!`;
+  }
+</script>
+<div class="section">
+  <h2>What is Evolution?</h2>
+  <p>Evolution is the change in the characteristics of a species over generations. It relies on the process of natural selection, where certain traits become more common because they help organisms survive and reproduce in their environment.</p>
+  <img src="GiraffeEvolution.png" alt="Giraffe Evolution" class="evolution-image" />
+  <p>For example, giraffes with longer necks were better at reaching food high up in trees. Over time, this trait became more common in the population, leading to the giraffes we see today.</p>
+</div>
+
+<div class="section">
+  <h2>Natural Selection</h2>
+  <p>Natural selection is a mechanism by which individuals with traits that are better suited to their environment are more likely to survive and reproduce. These traits are passed down to offspring, and over many generations, can change the traits of the population.</p>
+  <ul>
+    <li><strong>Variation:</strong> Individuals in a population vary in traits.</li>
+    <li><strong>Adaptation:</strong> Some traits provide advantages.</li>
+    <li><strong>Survival:</strong> Those with advantageous traits tend to survive and reproduce.</li>
+    <li><strong>Reproduction:</strong> Offspring inherit the traits that helped their parents survive.</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <h2 style="text-align: center;">🧪 Evolution Quiz</h2>
+  <form id="evolutionQuiz">
+    <div class="quiz-question">
+      <p>1. What does evolution explain?</p>
+      <label><input type="radio" name="q1" value="A"> How individuals grow during their lifetime</label><br>
+      <label><input type="radio" name="q1" value="B"> How traits are passed through generations in a population</label><br>
+      <label><input type="radio" name="q1" value="C"> How planets form</label><br>
+      <label><input type="radio" name="q1" value="D"> Why animals sleep</label>
+    </div>
+
+    <div class="quiz-question">
+      <p>2. Which of the following best describes natural selection?</p>
+      <label><input type="radio" name="q2" value="A"> All individuals survive and reproduce equally</label><br>
+      <label><input type="radio" name="q2" value="B"> Random chance determines survival</label><br>
+      <label><input type="radio" name="q2" value="C"> Individuals with beneficial traits are more likely to survive and reproduce</label><br>
+      <label><input type="radio" name="q2" value="D"> Only the strongest animals survive</label>
+    </div>
+
+    <div style="text-align:center;">
+      <button type="button" onclick="gradeEvolutionQuiz()" style="padding: 10px 20px; font-size: 1em; background-color: #2a7f62; color: white; border: none; border-radius: 6px;">Submit Answers</button>
+    </div>
+  </form>
+  <p id="evolutionScore" style="text-align: center; font-weight: bold; margin-top: 20px;"></p>
+</div>
+
+<script>
+  function gradeEvolutionQuiz() {
+    const answers = {
+      q1: "B",
+      q2: "C"
+    };
+
+    let score = 0;
+    for (let q in answers) {
+      const selected = document.querySelector(`input[name="${q}"]:checked`);
+      if (selected && selected.value === answers[q]) {
+        score++;
+      }
+    }
+
+    document.getElementById("evolutionScore").textContent = `You got ${score} out of 2 correct!`;
+  }
+</script>
 
 </body>
 </html>
