@@ -177,51 +177,93 @@
   });
 
   // --- Drag & drop roles ---
-  const correctRoles = {
-    Producer:  ["Grass","Algae","Oak Tree"],
-    Consumer:  ["Rabbit","Wolf","Hawk","Frog","Zooplankton"],
-    Decomposer:["Mushroom","Bacteria"]
-  };
-  const pool = document.getElementById('pool');
-  const zones = document.querySelectorAll('.zone');
-  let dragEl = null;
+  <script>
+// --- Drag & drop roles (desktop + touch) ---
+const correctRoles = {
+  Producer:  ["Grass","Algae","Oak Tree"],
+  Consumer:  ["Rabbit","Wolf","Hawk","Frog","Zooplankton"],
+  Decomposer:["Mushroom","Bacteria"]
+};
 
-  function enableDnD(el){
-    el.addEventListener('dragstart',e=>{dragEl = el; e.dataTransfer.setData('text/plain',el.textContent);});
-    el.addEventListener('dragend',()=>{dragEl=null;});
-  }
-  document.querySelectorAll('.chip').forEach(enableDnD);
+const pool = document.getElementById('pool');
+const zones = document.querySelectorAll('.zone');
+let dragEl = null;
 
+// Ensure all chips are draggable and DnD-enabled
+document.querySelectorAll('.chip').forEach(ch => {
+  ch.setAttribute('draggable', 'true');
+  enableDnD(ch);
+});
+
+function enableDnD(el){
+  // Desktop drag
+  el.addEventListener('dragstart', e=>{
+    dragEl = el;
+    // Required for some browsers to allow dropping
+    e.dataTransfer.setData('text/plain', el.textContent);
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  el.addEventListener('dragend', ()=>{ dragEl = null; });
+
+  // Touch fallback (simple “tap source, tap destination”)
+  el.addEventListener('touchstart', e=>{
+    dragEl = el;
+    el.classList.add('chip--selected');
+  });
+}
+
+// Make each drop area accept drops (and touch taps)
+zones.forEach(z=>{
+  const dropArea = z.querySelector('.chips');
+
+  // Desktop allow-drop
+  ['dragenter','dragover'].forEach(ev=>{
+    dropArea.addEventListener(ev, e=>{
+      e.preventDefault();              // <- critical so drop is allowed
+      z.classList.add('over');
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+    });
+  });
+  ['dragleave','drop'].forEach(ev=>{
+    dropArea.addEventListener(ev, ()=> z.classList.remove('over'));
+  });
+
+  // Desktop drop
+  dropArea.addEventListener('drop', e=>{
+    e.preventDefault();
+    if(dragEl){ dropArea.appendChild(dragEl); dragEl.classList.remove('chip--selected'); dragEl = null; }
+  });
+
+  // Touch “tap destination”
+  dropArea.addEventListener('touchstart', e=>{
+    if(dragEl){
+      dropArea.appendChild(dragEl);
+      dragEl.classList.remove('chip--selected');
+      dragEl = null;
+    }
+  }, {passive:true});
+});
+
+// Reset + Check buttons
+document.getElementById('resetRoles').addEventListener('click', ()=>{
+  document.querySelectorAll('.zone .chips .chip').forEach(ch=>pool.appendChild(ch));
+  document.getElementById('roleScore').textContent = '';
+  document.querySelectorAll('.chip').forEach(ch=>ch.classList.remove('chip--selected'));
+});
+
+document.getElementById('checkRoles').addEventListener('click', ()=>{
+  let score = 0, total = document.querySelectorAll('.chip').length;
   zones.forEach(z=>{
-    const dropArea = z.querySelector('.chips');
-    ['dragenter','dragover'].forEach(ev=>{
-      dropArea.addEventListener(ev, e=>{e.preventDefault(); z.classList.add('over')});
-    });
-    ['dragleave','drop'].forEach(ev=>{
-      dropArea.addEventListener(ev, e=>{z.classList.remove('over')});
-    });
-    dropArea.addEventListener('drop', e=>{
-      e.preventDefault();
-      if(dragEl){ dropArea.appendChild(dragEl); }
+    const expect = z.getAttribute('data-accept');
+    const placed = Array.from(z.querySelectorAll('.chip')).map(n=>n.textContent);
+    placed.forEach(name=>{
+      if(correctRoles[expect].includes(name)) score++;
     });
   });
+  document.getElementById('roleScore').textContent = `You placed ${score}/${total} correctly`;
+});
+</script>
 
-  document.getElementById('resetRoles').addEventListener('click', ()=>{
-    document.querySelectorAll('.zone .chips .chip').forEach(ch=>pool.appendChild(ch));
-    document.getElementById('roleScore').textContent = '';
-  });
-
-  document.getElementById('checkRoles').addEventListener('click', ()=>{
-    let score = 0, total = document.querySelectorAll('.chip').length;
-    zones.forEach(z=>{
-      const expect = z.getAttribute('data-accept');
-      const placed = Array.from(z.querySelectorAll('.chip')).map(n=>n.textContent);
-      placed.forEach(name=>{
-        if(correctRoles[expect].includes(name)) score++;
-      });
-    });
-    document.getElementById('roleScore').textContent = `You placed ${score}/${total} correctly`;
-  });
 
   // --- Food chain builder ---
   const CHAINS = {
