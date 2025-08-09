@@ -1,271 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SVG Baby Animal Template</title>
-  <style>
-    :root {
-      --fur: #b68d5e; /* base fur color */
-      --accent: #8a5a2b; /* ear/stripe */
-      --eye: #222; /* eye fill */
-      --pupil: #000; /* pupil */
-      --nose: #3b2f2f; /* nose fill */
-      --bg: #f6f7fb;
-      --grid: rgba(0,0,0,.08);
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ecology</title>
+<style>
+  body{margin:0;font-family:'Segoe UI',system-ui,Arial,sans-serif;background:linear-gradient(135deg,#d7f9ff,#ffffff);color:#233;}
+  .wrap{max-width:1100px;margin:0 auto;padding:40px 20px}
+  h1,h2{color:#0f6b7a;text-align:center;margin:0 0 12px}
+  p.lead{text-align:center;margin:8px auto 28px;max-width:800px}
 
-    body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background: var(--bg);
-      color:#111;
-      display:grid; grid-template-columns: 320px 1fr; min-height:100vh;
-    }
-    aside{padding:20px; border-right:1px solid #e5e7eb; background:#fff}
-    main{display:grid; place-items:center;}
-    h1{font-size:20px; margin:0 0 12px}
-    fieldset{border:1px solid #e5e7eb; border-radius:12px; padding:12px; margin:12px 0}
-    legend{padding:0 6px}
-    label{display:block; margin:8px 0}
-    .row{display:flex; gap:8px; flex-wrap:wrap}
-    button{padding:8px 10px; border:1px solid #d1d5db; background:#fff; border-radius:10px; cursor:pointer}
-    button[aria-pressed="true"]{outline:2px solid #111}
+  .btn{display:inline-block;background:#0f6b7a;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;font-weight:700;border:none;cursor:pointer}
+  .btn:hover{background:#0c505b}
+  .pill{background:#e8fafc;color:#0f6b7a;padding:4px 10px;border-radius:999px;font-weight:600}
 
-    /* SVG sizing */
-    .stage{width: min(92vw, 720px); height: min(72vh, 520px); background:white; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.08); overflow:hidden;}
-    svg{width:100%; height:100%; display:block}
+  /* Biome flip cards */
+  .grid{display:grid;gap:14px}
+  @media(min-width:800px){.grid{grid-template-columns:repeat(3,1fr)}}
+  .card{perspective:1000px;height:180px}
+  .face{position:relative;height:100%;transform-style:preserve-3d;transition:transform .6s}
+  .card.flipped .face{transform:rotateY(180deg)}
+  .front,.back{position:absolute;inset:0;border-radius:12px;padding:14px;box-shadow:0 6px 16px rgba(0,0,0,.08);backface-visibility:hidden}
+  .front{background:#ffffff;border:1px solid #d7eef2;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .back{background:#f7feff;border:1px solid #cfe6ea;transform:rotateY(180deg);font-size:.98rem;line-height:1.45}
 
-    /* Helpful grid toggle */
-    .grid line{stroke:var(--grid); stroke-width:1}
-    .grid .bold{stroke:rgba(0,0,0,.18)}
+  /* Drag & drop roles */
+  .roles{display:grid;gap:12px;margin-top:10px}
+  @media(min-width:900px){.roles{grid-template-columns:260px 1fr}}
+  .pool,.zones{background:#fff;border:1px solid #dfecec;border-radius:10px;padding:10px;box-shadow:0 4px 12px rgba(0,0,0,.05)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{user-select:none;background:#eef9f1;border-left:6px solid #2a7f62;border:1px solid #d4eadb;border-radius:999px;padding:6px 10px;cursor:grab}
+  .zonewrap{display:grid;gap:10px}
+  @media(min-width:900px){.zonewrap{grid-template-columns:repeat(3,1fr)}}
+  .zone{border:2px dashed #cfe6d9;border-radius:10px;padding:10px;min-height:110px}
+  .zone h3{margin:0 0 4px;color:#145c4d;text-align:center}
+  .zone.over{background:#f1fff7;box-shadow:inset 0 0 0 2px #8fe0c4}
 
-    /* Basic styles for parts */
-    .fur{fill:var(--fur)}
-    .accent{fill:var(--accent)}
-    .eye-fill{fill:var(--eye)}
-    .pupil{fill:var(--pupil)}
-    .nose{fill:var(--nose)}
+  /* Food chain builder */
+  .chain{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin:10px 0}
+  .node{background:#fff;border:1px solid #dfecec;border-radius:10px;padding:8px 12px;box-shadow:0 4px 12px rgba(0,0,0,.05)}
+  .arrow{font-size:20px;color:#999}
 
-    /* Hidden by default; JS toggles visibility */
-    [data-trait]{display:none}
-    [data-trait].on{display:inline}
-  </style>
+  /* Quiz */
+  .quiz{background:#ffffff;border:1px solid #dfecec;border-radius:12px;padding:16px;box-shadow:0 6px 16px rgba(0,0,0,.06);max-width:800px;margin:0 auto}
+  .q{margin-bottom:14px}
+  .q p{margin:0 0 6px;font-weight:700}
+  .submit{display:block;margin:12px auto 0}
+
+  .center{text-align:center}
+  .spacer{height:26px}
+</style>
 </head>
 <body>
-  <aside>
-    <h1>Build‑A‑Baby: SVG Animal</h1>
-    <p>Use these toggles to mix traits (think dominant/recessive). This is a clean starter you can copy into your site.</p>
+<div class="wrap">
+  <h1>🌿 Ecology</h1>
+  <p class="lead">Ecology studies how organisms interact with each other and with their environment — from <span class="pill">organism</span> to <span class="pill">population</span> to <span class="pill">community</span> to <span class="pill">ecosystem</span> to the <span class="pill">biosphere</span>.</p>
 
-    <fieldset>
-      <legend>Ears (size)</legend>
-      <div class="row" data-group="ears">
-        <button data-choice="small" aria-pressed="true">small (s)</button>
-        <button data-choice="large">large (L)</button>
+  <!-- Biome flip cards -->
+  <h2>Biomes (Tap to Flip)</h2>
+  <div class="grid" id="biomes">
+    <div class="card"><div class="face">
+      <div class="front">🌵 Desert</div>
+      <div class="back">Hot days, cold nights, low rainfall. Plants with water storage (cacti) and animals active at night.</div>
+    </div></div>
+    <div class="card"><div class="face">
+      <div class="front">🌲 Taiga</div>
+      <div class="back">Coniferous forests, long winters, short mild summers. Moose, lynx, evergreen trees.</div>
+    </div></div>
+    <div class="card"><div class="face">
+      <div class="front">🌴 Tropical Rainforest</div>
+      <div class="back">Warm, wet, high biodiversity. Dense canopy, rapid nutrient cycling.</div>
+    </div></div>
+    <div class="card"><div class="face">
+      <div class="front">🌾 Grassland</div>
+      <div class="back">Seasonal rainfall, grasses dominate, grazing herbivores and predators.</div>
+    </div></div>
+    <div class="card"><div class="face">
+      <div class="front">❄️ Tundra</div>
+      <div class="back">Permafrost, very cold, low-growing plants, short growing season.</div>
+    </div></div>
+    <div class="card"><div class="face">
+      <div class="front">🌳 Temperate Forest</div>
+      <div class="back">Four seasons, deciduous trees, rich soil and diverse fauna.</div>
+    </div></div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- Drag & drop roles -->
+  <h2>Sort the Organisms: Producer / Consumer / Decomposer</h2>
+  <div class="roles">
+    <div class="pool">
+      <strong>Organism Pool</strong>
+      <div class="chips" id="pool">
+        <div class="chip" draggable="true">Grass</div>
+        <div class="chip" draggable="true">Algae</div>
+        <div class="chip" draggable="true">Rabbit</div>
+        <div class="chip" draggable="true">Wolf</div>
+        <div class="chip" draggable="true">Mushroom</div>
+        <div class="chip" draggable="true">Bacteria</div>
+        <div class="chip" draggable="true">Hawk</div>
+        <div class="chip" draggable="true">Oak Tree</div>
+        <div class="chip" draggable="true">Frog</div>
+        <div class="chip" draggable="true">Zooplankton</div>
       </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Nose (shape)</legend>
-      <div class="row" data-group="nose">
-        <button data-choice="round" aria-pressed="true">round (r)</button>
-        <button data-choice="triangle">triangle (T)</button>
+      <div class="center" style="margin-top:10px;">
+        <button class="btn" id="checkRoles">Check Answers</button>
+        <button class="btn" id="resetRoles" style="background:#ececec;color:#222">Reset</button>
       </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Tail (length)</legend>
-      <div class="row" data-group="tail">
-        <button data-choice="short" aria-pressed="true">short (t)</button>
-        <button data-choice="long">long (L)</button>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Eye color</legend>
-      <div class="row" data-group="eyes">
-        <button data-choice="dark" aria-pressed="true">dark (D)</button>
-        <button data-choice="blue">blue (b)</button>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Fur color</legend>
-      <div class="row">
-        <button data-fur="#b68d5e" aria-pressed="true">tawny</button>
-        <button data-fur="#c8c1b8">cream</button>
-        <button data-fur="#8f5f3f">brown</button>
-        <button data-fur="#c0c9d6">gray</button>
-      </div>
-    </fieldset>
-
-    <div class="row">
-      <button id="toggle-grid">Toggle Grid</button>
-      <button id="randomize">Random Mix</button>
+      <p class="center" id="roleScore"></p>
     </div>
 
-    <p style="font-size:12px;color:#555">Tip: open the SVG in a vector editor later if you want bezier-curved custom shapes. For pure HTML+SVG, everything below is just coordinates.</p>
-  </aside>
-
-  <main>
-    <div class="stage">
-      <svg viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Baby animal">
-        <!-- GRID (for learning coordinates) -->
-        <g class="grid" id="grid" opacity=".8">
-          <!-- vertical lines every 20px -->
-          <g>
-            <script type="application/ecmascript"><![CDATA[
-              // empty script tag so HTML validators ignore dynamic grid build in JS
-            ]]></script>
-          </g>
-        </g>
-
-        <!-- BACKGROUND -->
-        <rect x="0" y="0" width="600" height="420" fill="#ffffff" />
-
-        <!-- ANIMAL GROUP - translate to center whole animal -->
-        <g id="animal" transform="translate(300,210)">
-          <!-- Body (ellipse): cx/cy are 0,0 because we translated the group to center -->
-          <ellipse class="fur" cx="0" cy="40" rx="120" ry="90" />
-
-          <!-- Head (circle) -->
-          <circle class="fur" cx="0" cy="-40" r="80" />
-
-          <!-- Ears (two variants) -->
-          <g id="ears">
-            <!-- small -->
-            <g data-trait="ears:small" class="on">
-              <circle class="fur" cx="-50" cy="-105" r="24" />
-              <circle class="fur" cx="50" cy="-105" r="24" />
-              <circle class="accent" cx="-50" cy="-105" r="12" />
-              <circle class="accent" cx="50" cy="-105" r="12" />
-            </g>
-            <!-- large -->
-            <g data-trait="ears:large">
-              <ellipse class="fur" cx="-60" cy="-120" rx="32" ry="40" />
-              <ellipse class="fur" cx="60" cy="-120" rx="32" ry="40" />
-              <ellipse class="accent" cx="-60" cy="-120" rx="16" ry="22" />
-              <ellipse class="accent" cx="60" cy="-120" rx="16" ry="22" />
-            </g>
-          </g>
-
-          <!-- Eyes (positioned from face center) -->
-          <g id="eyes">
-            <g data-trait="eyes:dark" class="on">
-              <circle class="eye-fill" cx="-26" cy="-52" r="10" />
-              <circle class="eye-fill" cx="26" cy="-52" r="10" />
-              <circle class="pupil" cx="-26" cy="-52" r="4" />
-              <circle class="pupil" cx="26" cy="-52" r="4" />
-            </g>
-            <g data-trait="eyes:blue">
-              <circle fill="#4d76a6" cx="-26" cy="-52" r="10" />
-              <circle fill="#4d76a6" cx="26" cy="-52" r="10" />
-              <circle class="pupil" cx="-26" cy="-52" r="4" />
-              <circle class="pupil" cx="26" cy="-52" r="4" />
-            </g>
-          </g>
-
-          <!-- Nose (two variants) -->
-          <g id="nose">
-            <!-- round nose uses circle: cx, cy, r -->
-            <circle data-trait="nose:round" class="nose on" cx="0" cy="-30" r="8" />
-            <!-- triangle nose uses polygon: points="x1,y1 x2,y2 x3,y3" -->
-            <polygon data-trait="nose:triangle" class="nose" points="-8,-26 8,-26 0,-12" />
-          </g>
-
-          <!-- Mouth -->
-          <path d="M -18 -16 Q 0 4 18 -16" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
-
-          <!-- Tail variants -->
-          <g id="tail">
-            <path data-trait="tail:short" class="on" d="M 115 70 q 40 10 40 -10" fill="none" stroke="var(--fur)" stroke-width="16" stroke-linecap="round" />
-            <path data-trait="tail:long" d="M 115 70 q 60 10 60 -20 q 10 -20 -10 -30" fill="none" stroke="var(--fur)" stroke-width="16" stroke-linecap="round" />
-          </g>
-
-          <!-- Simple feet -->
-          <ellipse class="fur" cx="-45" cy="120" rx="26" ry="14" />
-          <ellipse class="fur" cx="45" cy="120" rx="26" ry="14" />
-        </g>
-      </svg>
+    <div class="zones">
+      <div class="zonewrap">
+        <div class="zone" data-accept="Producer"><h3>Producer</h3><div class="chips"></div></div>
+        <div class="zone" data-accept="Consumer"><h3>Consumer</h3><div class="chips"></div></div>
+        <div class="zone" data-accept="Decomposer"><h3>Decomposer</h3><div class="chips"></div></div>
+      </div>
+      <p style="margin:10px 0 0"><strong>Hint:</strong> Producers make their own food (photosynthesis). Consumers eat other organisms. Decomposers break down dead matter, recycling nutrients.</p>
     </div>
-  </main>
+  </div>
 
-  <script>
-    // --- build a visible 20px grid to learn coordinates ---
-    const svg = document.querySelector('svg');
-    const grid = document.getElementById('grid');
-    function drawGrid(){
-      const w = 600, h = 420, step = 20;
-      // remove old
-      grid.innerHTML = '';
-      for(let x=0; x<=w; x+=step){
-        const v = document.createElementNS('http://www.w3.org/2000/svg','line');
-        v.setAttribute('x1', x); v.setAttribute('y1', 0);
-        v.setAttribute('x2', x); v.setAttribute('y2', h);
-        v.setAttribute('class', (x%100===0) ? 'bold' : '');
-        grid.appendChild(v);
-      }
-      for(let y=0; y<=h; y+=step){
-        const v = document.createElementNS('http://www.w3.org/2000/svg','line');
-        v.setAttribute('x1', 0); v.setAttribute('y1', y);
-        v.setAttribute('x2', w); v.setAttribute('y2', y);
-        v.setAttribute('class', (y%100===0) ? 'bold' : '');
-        grid.appendChild(v);
-      }
-    }
-    drawGrid();
-    let gridOn = true;
+  <div class="spacer"></div>
 
-    // --- trait toggling helpers ---
-    function setTrait(group, choice){
-      // turn off all
-      document.querySelectorAll(`[data-trait^="${group}:"]`).forEach(el=>el.classList.remove('on'));
-      // turn on selected
-      document.querySelectorAll(`[data-trait="${group}:${choice}"]`).forEach(el=>el.classList.add('on'));
-      // update buttons
-      const row = document.querySelector(`[data-group="${group}"]`);
-      row?.querySelectorAll('button').forEach(b=>{
-        b.setAttribute('aria-pressed', String(b.dataset.choice === choice));
-      });
-    }
+  <!-- Food chain builder -->
+  <h2>Build a Food Chain</h2>
+  <div class="center" style="margin-bottom:10px">
+    <label for="chainSel"><strong>Pick an ecosystem:</strong></label>
+    <select id="chainSel">
+      <option value="field">Field</option>
+      <option value="pond">Pond</option>
+      <option value="forest">Forest</option>
+      <option value="ocean">Ocean</option>
+    </select>
+    <button class="btn" id="showChain">Show Chain</button>
+  </div>
+  <div class="chain" id="chainView"></div>
+  <p class="center muted" style="max-width:760px;margin:10px auto">Energy flows **from the sun to producers**, then to consumers. Only ~10% of energy passes to the next trophic level (the rest is lost as heat and life processes).</p>
 
-    // wire up groups
-    document.querySelectorAll('[data-group]').forEach(row=>{
-      row.addEventListener('click', (e)=>{
-        const b = e.target.closest('button');
-        if(!b) return;
-        const group = row.dataset.group;
-        const choice = b.dataset.choice;
-        setTrait(group, choice);
-      })
-    })
+  <div class="spacer"></div>
 
-    // fur color buttons
-    document.querySelectorAll('[data-fur]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        document.documentElement.style.setProperty('--fur', btn.dataset.fur);
-        document.querySelectorAll('[data-fur]').forEach(b=>b.setAttribute('aria-pressed','false'));
-        btn.setAttribute('aria-pressed','true');
-      })
-    })
+  <!-- Mini quiz -->
+  <h2>Ecology Quick Quiz</h2>
+  <div class="quiz">
+    <div class="q">
+      <p>1) A decomposer’s main role is to…</p>
+      <label><input type="radio" name="q1" value="A"> Produce glucose from sunlight</label><br>
+      <label><input type="radio" name="q1" value="B"> Hunt prey</label><br>
+      <label><input type="radio" name="q1" value="C"> Break down dead matter and recycle nutrients</label>
+    </div>
+    <div class="q">
+      <p>2) In most ecosystems, the original source of energy is…</p>
+      <label><input type="radio" name="q2" value="A"> The sun</label><br>
+      <label><input type="radio" name="q2" value="B"> Decomposers</label><br>
+      <label><input type="radio" name="q2" value="C"> Apex predators</label>
+    </div>
+    <div class="q">
+      <p>3) Which sequence best shows energy flow?</p>
+      <label><input type="radio" name="q3" value="A"> Consumer → Producer → Decomposer</label><br>
+      <label><input type="radio" name="q3" value="B"> Producer → Consumer → Decomposer</label><br>
+      <label><input type="radio" name="q3" value="C"> Decomposer → Consumer → Producer</label>
+    </div>
+    <button class="btn submit" id="quizBtn">Submit</button>
+    <p class="center" id="quizScore"></p>
+  </div>
 
-    // grid toggle
-    document.getElementById('toggle-grid').addEventListener('click',()=>{
-      gridOn = !gridOn; grid.style.display = gridOn ? 'inline' : 'none';
+  <div class="center" style="margin-top:24px">
+    <a class="btn" href="../index.html">Back to Biology</a>
+  </div>
+</div>
+
+<script>
+  // --- Flip cards ---
+  document.querySelectorAll('#biomes .card').forEach(c=>{
+    c.addEventListener('click',()=>c.classList.toggle('flipped'));
+  });
+
+  // --- Drag & drop roles ---
+  const correctRoles = {
+    Producer:  ["Grass","Algae","Oak Tree"],
+    Consumer:  ["Rabbit","Wolf","Hawk","Frog","Zooplankton"],
+    Decomposer:["Mushroom","Bacteria"]
+  };
+  const pool = document.getElementById('pool');
+  const zones = document.querySelectorAll('.zone');
+  let dragEl = null;
+
+  function enableDnD(el){
+    el.addEventListener('dragstart',e=>{dragEl = el; e.dataTransfer.setData('text/plain',el.textContent);});
+    el.addEventListener('dragend',()=>{dragEl=null;});
+  }
+  document.querySelectorAll('.chip').forEach(enableDnD);
+
+  zones.forEach(z=>{
+    const dropArea = z.querySelector('.chips');
+    ['dragenter','dragover'].forEach(ev=>{
+      dropArea.addEventListener(ev, e=>{e.preventDefault(); z.classList.add('over')});
     });
+    ['dragleave','drop'].forEach(ev=>{
+      dropArea.addEventListener(ev, e=>{z.classList.remove('over')});
+    });
+    dropArea.addEventListener('drop', e=>{
+      e.preventDefault();
+      if(dragEl){ dropArea.appendChild(dragEl); }
+    });
+  });
 
-    // randomize traits (simulating allele mix)
-    const choices = {
-      ears:['small','large'],
-      nose:['round','triangle'],
-      tail:['short','long'],
-      eyes:['dark','blue']
-    };
-    document.getElementById('randomize').addEventListener('click',()=>{
-      Object.entries(choices).forEach(([g,opts])=>{
-        const pick = opts[Math.floor(Math.random()*opts.length)];
-        setTrait(g, pick);
-      })
-    })
-  </script>
+  document.getElementById('resetRoles').addEventListener('click', ()=>{
+    document.querySelectorAll('.zone .chips .chip').forEach(ch=>pool.appendChild(ch));
+    document.getElementById('roleScore').textContent = '';
+  });
+
+  document.getElementById('checkRoles').addEventListener('click', ()=>{
+    let score = 0, total = document.querySelectorAll('.chip').length;
+    zones.forEach(z=>{
+      const expect = z.getAttribute('data-accept');
+      const placed = Array.from(z.querySelectorAll('.chip')).map(n=>n.textContent);
+      placed.forEach(name=>{
+        if(correctRoles[expect].includes(name)) score++;
+      });
+    });
+    document.getElementById('roleScore').textContent = `You placed ${score}/${total} correctly`;
+  });
+
+  // --- Food chain builder ---
+  const CHAINS = {
+    field:  ["Sun","Grass (Producer)","Rabbit (Primary)","Fox (Secondary)","Hawk (Tertiary)"],
+    pond:   ["Sun","Algae (Producer)","Zooplankton (Primary)","Minnow (Secondary)","Bass (Tertiary)"],
+    forest: ["Sun","Oak (Producer)","Caterpillar (Primary)","Bird (Secondary)","Hawk (Tertiary)"],
+    ocean:  ["Sun","Phytoplankton (Producer)","Zooplankton (Primary)","Small Fish (Secondary)","Tuna (Tertiary)"]
+  };
+  const chainSel = document.getElementById('chainSel');
+  const chainView = document.getElementById('chainView');
+  document.getElementById('showChain').addEventListener('click', ()=>{
+    const key = chainSel.value;
+    const arr = CHAINS[key];
+    chainView.innerHTML = '';
+    arr.forEach((n,i)=>{
+      const node = document.createElement('div');
+      node.className='node';
+      node.textContent = n;
+      chainView.appendChild(node);
+      if(i < arr.length-1){
+        const arrow = document.createElement('div');
+        arrow.className='arrow';
+        arrow.textContent = '➜';
+        chainView.appendChild(arrow);
+      }
+    });
+  });
+  // render a default chain
+  document.getElementById('showChain').click();
+
+  // --- Quiz ---
+  const key = { q1:"C", q2:"A", q3:"B" };
+  document.getElementById('quizBtn').addEventListener('click', ()=>{
+    let score=0, total=Object.keys(key).length;
+    for (const q in key){
+      const sel = document.querySelector(`input[name="${q}"]:checked`);
+      if(sel && sel.value===key[q]) score++;
+    }
+    document.getElementById('quizScore').textContent = `Score: ${score}/${total}`;
+  });
+</script>
 </body>
 </html>
