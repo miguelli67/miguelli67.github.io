@@ -1,92 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>World War I</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to bottom right, #cfd9df, #e2ebf0);
-      color: #1a1a1a;
-      padding: 20px;
-    }
-    h1, h2 {
-      text-align: center;
-      color: #2e4a6b;
-    }
-    p, ul {
-      max-width: 900px;
-      margin: 10px auto;
-      font-size: 1.1em;
-      line-height: 1.6;
-    }
-    ul li {
-      margin-bottom: 8px;
-    }
-    .button-link {
-      display: inline-block;
-      background-color: #4a6fa5;
-      color: white;
-      padding: 10px 18px;
-      margin: 5px;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-    }
-    .button-link:hover {
-      background-color: #3c5a82;
-    }
-    .section {
-      background-color: rgba(255, 255, 255, 0.8);
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>World War I (1914–1918)</title>
+<style>
+  :root {
+    --brand:#4a6fa5;
+    --brand-dark:#3c5a82;
+    --bg1:#cfd9df;
+    --bg2:#e2ebf0;
+    --card:#ffffff;
+    --border:#dfe3e6;
+    --shadow:0 6px 16px rgba(0,0,0,.08);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',system-ui,Arial,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:#223}
+  .wrap{max-width:1100px;margin:0 auto;padding:40px 18px}
+  h1,h2{color:var(--brand);text-align:center;margin:0 0 12px}
+  p.lead{text-align:center;margin:8px auto 28px;max-width:820px}
+  .btn{display:inline-block;background:var(--brand);color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;font-weight:700;border:none;cursor:pointer}
+  .btn:hover{background:var(--brand-dark)}
+  .muted{color:#556;opacity:.9}
+  .spacer{height:26px}
+  .center{text-align:center}
+
+  /* Cards (MAIN causes) */
+  .grid{display:grid;gap:14px}
+  @media(min-width:800px){.grid{grid-template-columns:repeat(4,1fr)}}
+  .card{perspective:1000px;height:200px}
+  .face{position:relative;height:100%;transform-style:preserve-3d;transition:transform .6s}
+  .card.flipped .face{transform:rotateY(180deg)}
+  .front,.back{position:absolute;inset:0;border-radius:12px;padding:14px;box-shadow:var(--shadow);backface-visibility:hidden;border:1px solid var(--border)}
+  .front{background:var(--card);display:flex;align-items:center;justify-content:center;font-weight:800}
+  .back{background:#f8fbff;transform:rotateY(180deg);font-size:.98rem;line-height:1.45}
+
+  /* Alliances badges */
+  .alliances{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:8px 0 16px}
+  .badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);padding:8px 12px;border-radius:999px;box-shadow:0 4px 12px rgba(0,0,0,.05);font-weight:700}
+  .dot{width:12px;height:12px;border-radius:50%}
+  .entente{background:#2f855a}
+  .alliance{background:#c53030}
+
+  /* Timeline */
+  .timeline{background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:14px}
+  .years{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:10px}
+  .years button{background:#eef2f7;border:1px solid var(--border);padding:8px 10px;border-radius:8px;cursor:pointer;font-weight:700}
+  .years button.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .eventbox{background:#f6f9ff;border:1px solid #d8e2f0;border-radius:10px;padding:12px;min-height:110px}
+
+  /* Trench section */
+  .trench{display:grid;gap:16px;grid-template-columns:1fr}
+  @media(min-width:900px){.trench{grid-template-columns:1fr 1fr}}
+  .panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;box-shadow:var(--shadow)}
+  .ascii{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;background:#0c1b2a;color:#bfe1ff;border-radius:8px;padding:10px;font-size:.85rem;line-height:1.25;overflow:auto}
+
+  /* Quiz */
+  .quiz{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shadow);max-width:800px;margin:0 auto}
+  .q{margin-bottom:14px}
+  .q p{margin:0 0 6px;font-weight:700}
+  .submit{display:block;margin:12px auto 0}
+
+  /* Back button container */
+  .footer-actions{margin-top:24px;text-align:center}
+</style>
 </head>
 <body>
+<div class="wrap">
   <h1>World War I (1914–1918)</h1>
-  <p style="text-align:center; max-width:800px; margin: 0 auto 20px;">
-    World War I, also known as the Great War, was a global conflict centered in Europe that involved many of the world's great powers.
-  </p>
+  <p class="lead">A global conflict centered in Europe, involving complex causes, massive battles, and far-reaching consequences that reshaped the world.</p>
 
-  <div class="section">
-    <h2>Causes of WWI</h2>
-    <ul>
-      <li><strong>Militarism:</strong> European nations built up large militaries, leading to an arms race.</li>
-      <li><strong>Alliances:</strong> Complex alliances meant that a conflict between two countries could draw in many more.</li>
-      <li><strong>Imperialism:</strong> Competition for colonies created tension between powers.</li>
-      <li><strong>Nationalism:</strong> Pride and rivalry between nations heightened tensions.</li>
-      <li><strong>Assassination of Archduke Franz Ferdinand:</strong> The immediate spark that triggered the war.</li>
-    </ul>
+  <!-- MAIN causes -->
+  <h2>Tap/Click to Reveal the MAIN Causes</h2>
+  <div class="grid" id="mainCauses">
+    <div class="card"><div class="face">
+      <div class="front">M — Militarism 💣</div>
+      <div class="back"><strong>Militarism:</strong> Arms races and military buildup made war more likely; leaders trusted force over diplomacy.</div>
+    </div></div>
+    <div class="card"><div class="face">
+      <div class="front">A — Alliances 🤝</div>
+      <div class="back"><strong>Alliances:</strong> Binding agreements meant a dispute could pull in many nations, turning a spark into a continent-wide war.</div>
+    </div></div>
+    <div class="card"><div class="face">
+      <div class="front">I — Imperialism 🌍</div>
+      <div class="back"><strong>Imperialism:</strong> Rival empires competed for colonies, resources, and prestige, fueling international tension.</div>
+    </div></div>
+    <div class="card"><div class="face">
+      <div class="front">N — Nationalism 🏳️</div>
+      <div class="back"><strong>Nationalism:</strong> Intense pride and ethnic aspirations stoked rivalries and independence movements.</div>
+    </div></div>
   </div>
 
-  <div class="section">
-    <h2>Major Events</h2>
-    <ul>
-      <li>1914 – War begins after assassination in Sarajevo.</li>
-      <li>1915 – Sinking of the Lusitania increases tensions with the U.S.</li>
-      <li>1916 – Battle of the Somme results in massive casualties.</li>
-      <li>1917 – U.S. enters the war; Russia withdraws after revolution.</li>
-      <li>1918 – Armistice signed on November 11.</li>
-    </ul>
+  <div class="spacer"></div>
+
+  <!-- Alliances key -->
+  <h2>Major Pre-War Alliances</h2>
+  <div class="alliances">
+    <span class="badge"><span class="dot entente"></span>Triple Entente: France · Russia · Britain</span>
+    <span class="badge"><span class="dot alliance"></span>Triple Alliance: Germany · Austria-Hungary · Italy*</span>
+  </div>
+  <p class="center muted" style="max-width:820px;margin:10px auto">*Italy later joined the Allies (1915). The assassination of Archduke Franz Ferdinand (June 1914) triggered a chain reaction through these alliances.</p>
+
+  <div class="spacer"></div>
+
+  <!-- Interactive timeline -->
+  <h2>Interactive Timeline</h2>
+  <div class="timeline">
+    <div class="years" id="years"></div>
+    <div class="eventbox" id="eventBox">Choose a year (1914–1918) to see key events.</div>
   </div>
 
-  <div class="section">
-    <h2>Consequences</h2>
-    <ul>
-      <li>Over 16 million people died.</li>
-      <li>Political borders in Europe were redrawn.</li>
-      <li>The League of Nations was established to prevent future wars.</li>
-      <li>The Treaty of Versailles placed heavy penalties on Germany, setting the stage for WWII.</li>
-    </ul>
+  <div class="spacer"></div>
+
+  <!-- Trench warfare -->
+  <h2>Trench Warfare</h2>
+  <div class="trench">
+    <div class="panel">
+      <p><strong>What & Why:</strong> On the Western Front, both sides dug extensive trenches for protection from machine guns and artillery, creating a deadly stalemate.</p>
+      <ul>
+        <li><strong>No Man’s Land:</strong> Exposed area between trenches.</li>
+        <li><strong>Over the Top:</strong> Infantry charges across No Man’s Land under fire.</li>
+        <li><strong>New Tech:</strong> Machine guns, poison gas, tanks, aircraft.</li>
+      </ul>
+      <p class="muted">Conditions were harsh: mud, rats, disease, and constant shelling.</p>
+    </div>
+    <div class="panel">
+      <pre class="ascii">
+Allied Trench             No Man's Land                    Central Powers Trench
+┌───────────────┐        ~ ~ ~ ~ ~ ~ ~ ~ ~                ┌───────────────┐
+│ Sandbags      │     barbed wire  crater  barbed wire    │ Sandbags      │
+│ Firing Step   │  ___/\/\/\____   ___     /\/\/\___      │ Firing Step   │
+│ Dugout        │ |             | |   |   |        |      │ Dugout        │
+└───────────────┘ |             | |   |   |        |      └───────────────┘
+      </pre>
+    </div>
   </div>
 
-  <p style="text-align:center;">
-    <a class="button-link" href="../../index.html">Back to Main Page</a>
-  </p>
+  <div class="spacer"></div>
+
+  <!-- Quick quiz -->
+  <h2>WWI Quick Quiz</h2>
+  <div class="quiz">
+    <div class="q">
+      <p>1) Which event directly triggered the start of WWI?</p>
+      <label><input type="radio" name="q1" value="A"> The Zimmermann Telegram</label><br/>
+      <label><input type="radio" name="q1" value="B"> The assassination of Archduke Franz Ferdinand</label><br/>
+      <label><input type="radio" name="q1" value="C"> The Russian Revolution</label>
+    </div>
+    <div class="q">
+      <p>2) Which pair lists the pre-war alliances correctly?</p>
+      <label><input type="radio" name="q2" value="A"> Entente: Germany, Italy, Russia · Alliance: Britain, France, Austria-Hungary</label><br/>
+      <label><input type="radio" name="q2" value="B"> Entente: France, Russia, Britain · Alliance: Germany, Austria-Hungary, Italy</label><br/>
+      <label><input type="radio" name="q2" value="C"> Entente: Germany, Russia, Britain · Alliance: France, Italy, Austria-Hungary</label>
+    </div>
+    <div class="q">
+      <p>3) Which technology contributed most to the stalemate on the Western Front?</p>
+      <label><input type="radio" name="q3" value="A"> Submarines</label><br/>
+      <label><input type="radio" name="q3" value="B"> Machine guns</label><br/>
+      <label><input type="radio" name="q3" value="C"> Zeppelins</label>
+    </div>
+    <button class="btn submit" id="quizBtn">Submit</button>
+    <p class="center" id="quizScore"></p>
+  </div>
+
+  <div class="footer-actions">
+    <a class="btn" href="../index.html">Back to History</a>
+  </div>
+</div>
+
+<script>
+/* ===== MAIN causes flip-cards ===== */
+document.querySelectorAll('#mainCauses .card').forEach(c=>{
+  c.addEventListener('click', ()=> c.classList.toggle('flipped'));
+});
+
+/* ===== Interactive Timeline ===== */
+const YEARS = {
+  1914: [
+    "June: Assassination of Archduke Franz Ferdinand in Sarajevo.",
+    "July–Aug: Alliance system triggers declarations of war.",
+    "Aug–Sep: German advance stopped at the First Battle of the Marne."
+  ],
+  1915: [
+    "Trench warfare entrenches on Western Front.",
+    "Germany uses poison gas at Ypres.",
+    "Italy joins the Allies (leaves Triple Alliance)."
+  ],
+  1916: [
+    "Verdun: 'They shall not pass'—one of the longest, bloodiest battles.",
+    "Somme Offensive: Over a million casualties; limited gains."
+  ],
+  1917: [
+    "U.S. enters the war (April) after unrestricted submarine warfare & Zimmermann Telegram.",
+    "Russian Revolutions; Russia exits war (Treaty of Brest-Litovsk in early 1918)."
+  ],
+  1918: [
+    "Spring: German offensives; later halted by Allied counterattacks.",
+    "Nov 11: Armistice ends fighting on the Western Front."
+  ]
+};
+
+const yearsWrap = document.getElementById('years');
+const eventBox  = document.getElementById('eventBox');
+
+Object.keys(YEARS).forEach((y, i)=>{
+  const b = document.createElement('button');
+  b.textContent = y;
+  if(i===0) b.classList.add('active');
+  b.addEventListener('click', ()=>{
+    yearsWrap.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    renderYear(y);
+  });
+  yearsWrap.appendChild(b);
+});
+
+function renderYear(y){
+  const items = YEARS[y].map(x=>`• ${x}`).join('<br>');
+  eventBox.innerHTML = `<strong>${y}</strong><br>${items}`;
+}
+// initial render
+renderYear('1914');
+
+/* ===== Quick Quiz ===== */
+const key = { q1:"B", q2:"B", q3:"B" };
+document.getElementById('quizBtn').addEventListener('click', ()=>{
+  let score=0, total=Object.keys(key).length;
+  for (const q in key){
+    const sel = document.querySelector(\`input[name="\${q}"]:checked\`);
+    if(sel && sel.value===key[q]) score++;
+  }
+  document.getElementById('quizScore').textContent = \`Score: \${score}/\${total}\`;
+});
+</script>
 </body>
 </html>
+
